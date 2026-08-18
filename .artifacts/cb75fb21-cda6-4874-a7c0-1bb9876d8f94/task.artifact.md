@@ -1,0 +1,4 @@
+- [x] Corrigir `activity_main.xml` (restaurar DrawerLayout e corrigir sintaxe)
+- [x] Criar layout de item `item_produto.xml`
+- [x] Atualizar `fragment_transform.xml` com a interface personalizada do PistaLimpa
+- [x] Verificar integridade do projeto (Build)

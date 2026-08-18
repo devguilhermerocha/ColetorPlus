@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">PistaLimpa</string>
+
+    <string name="hello_blank_fragment">Fragmento</string>
+
+    <string name="menu_reposicao">Reposição na Pista</string>
+    <string name="menu_historico">Histórico</string>
+    <string name="menu_settings">Configurações</string>
+
+    <string name="menu_transform">Reposição</string>
+    <string name="menu_reflow">Histórico</string>
+    <string name="menu_slideshow">Configurações</string>
+
+    <string name="nav_header_title">PistaLimpa</string>
+    <string name="nav_header_subtitle">Gestão de Reposição</string>
+    <string name="nav_header_desc">Header de Navegação</string>
+    <string name="fab_content_description">Ação rápida</string>
+    <string name="image_view_item_transform_content_description">Imagem do item</string>
+
+    <string name="navigation_drawer_open">Abrir menu</string>
+    <string name="navigation_drawer_close">Fechar menu</string>
+</resources>
