@@ -1,9 +1,10 @@
 package com.application.pistalimpa.data.model;
 
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "produtos")
+@Entity(tableName = "produtos",  indices = {@Index(value = {"codigoEan"}, unique = true)})
 public class Produto {
     @PrimaryKey(autoGenerate = true)
     private long id;
