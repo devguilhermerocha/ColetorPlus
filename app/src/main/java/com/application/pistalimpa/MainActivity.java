@@ -13,6 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.application.pistalimpa.databinding.ActivityMainBinding;
+import com.application.pistalimpa.ui.produto.NovoProdutoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,10 +33,11 @@ public class MainActivity extends AppCompatActivity {
         // 2. Configura a Toolbar
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        // 3. Removemos ou ajustamos o FAB (Botão Flutuante) se necessário
+        // 3. Configura o Botão Flutuante (FAB) para abrir o BottomSheetDialogFragment
         if (binding.appBarMain.fab != null) {
             binding.appBarMain.fab.setOnClickListener(view -> {
-                // Ação rápida futura (ex: abrir câmera direto)
+                NovoProdutoFragment dialog = NovoProdutoFragment.newInstance();
+                dialog.show(getSupportFragmentManager(), "Novo_ProdutoFragment");
             });
         }
 
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
 
-        // 5. Configuração do Menu Lateral (Drawer) para telas maiores/smartphones
+        // 5. Configuração do Menu Lateral (Drawer)
         NavigationView navigationView = binding.navView;
         if (navigationView != null) {
             mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(navigationView, navController);
         }
 
-        // 6. Configuração da BottomNavigation (caso o layout responsivo utilize no rodapé)
+        // 6. Configuração da BottomNavigation no rodapé
         BottomNavigationView bottomNavigationView = binding.appBarMain.contentMain.bottomNavView;
         if (bottomNavigationView != null) {
             mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         boolean result = super.onCreateOptionsMenu(menu);
         NavigationView navView = findViewById(R.id.nav_view);
 
-        // Se o menu lateral não estiver visível (ex: telas específicas/foldables), infla o menu de três pontos
+        // Se o menu lateral não estiver visível, infla o menu de três pontos
         if (navView == null) {
             getMenuInflater().inflate(R.menu.overflow, menu);
         }
@@ -81,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Redirecionamento correto para as Configurações quando clicado no menu de contexto
         if (item.getItemId() == R.id.nav_settings) {
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
             navController.navigate(R.id.nav_settings);
