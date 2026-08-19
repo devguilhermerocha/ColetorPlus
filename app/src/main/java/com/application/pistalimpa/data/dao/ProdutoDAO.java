@@ -20,6 +20,6 @@ public interface ProdutoDAO {
     @Query("SELECT * FROM produtos WHERE isReposto = 0 ORDER BY isCritico DESC, id DESC")
     List<Produto> getProdutosPendentes();
 
-    @Query("SELECT * FROM produtos WHERE isReposto = 1 ORDER BY id DESC")
-    List<Produto> getProdutosHistorico();
+    @Query("SELECT * FROM produtos WHERE codigoEan = :ean LIMIT 1")
+    Produto buscarPorEan(String ean);
 }

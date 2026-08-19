@@ -1,11 +1,11 @@
 package com.application.pistalimpa.ui.reposicao;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -25,15 +25,12 @@ import java.util.List;
 
 public class ReposicaoFragment extends Fragment {
 
-    private EditText etCodigoOuNome;
-    private CheckBox cbCritico;
-    private Button btnAdicionar;
+    private EditText etPesquisa;
     private ImageButton btnAbrirCamera;
     private RecyclerView rvProdutos;
     private ProdutoAdapter adapter;
 
     public ReposicaoFragment() {
-        // Construtor público vazio obrigatório
     }
 
     public static ReposicaoFragment newInstance() {
@@ -50,82 +47,68 @@ public class ReposicaoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 1. Mapeamento dos componentes com os IDs exatos do XML
-        etCodigoOuNome = view.findViewById(R.id.etCodigoOuNome);
-        cbCritico = view.findViewById(R.id.cbCritico);
-        btnAdicionar = view.findViewById(R.id.btnAdicionar);
+        etPesquisa = view.findViewById(R.id.etCodigoOuNome);
         btnAbrirCamera = view.findViewById(R.id.btnAbrirCamera);
         rvProdutos = view.findViewById(R.id.rvProdutos);
 
-        // 2. Configura a RecyclerView
         rvProdutos.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         adapter = new ProdutoAdapter((produto, isReposto) -> {
-            // Quando o repositor marcar o CheckBox no item da lista
             produto.setReposto(isReposto);
             AppDatabase.getInstance(requireContext()).produtoDao().atualizar(produto);
-
-            // Recarrega os dados do banco para atualizar a lista na tela
             carregarProdutosDoBanco();
         });
 
         rvProdutos.setAdapter(adapter);
 
-        // 3. Ação do Botão "Adicionar" (Salvar direto no Room)
-        btnAdicionar.setOnClickListener(v -> adicionarProduto());
+        if (etPesquisa != null) {
+            etPesquisa.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-        // 4. Ação do Botão da Câmera (Para leitor de código de barras futuro)
-        btnAbrirCamera.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Abrindo leitor de código de barras...", Toast.LENGTH_SHORT).show();
-        });
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (adapter != null) {
+                        adapter.filtrar(s.toString());
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        }
+
+        if (btnAbrirCamera != null) {
+            btnAbrirCamera.setOnClickListener(v -> {
+                Toast.makeText(requireContext(), "Abrindo leitor de código de barras...", Toast.LENGTH_SHORT).show();
+            });
+        }
+
+        getParentFragmentManager().setFragmentResultListener(
+                "chave_novo_produto",
+                getViewLifecycleOwner(),
+                (requestKey, result) -> {
+                    boolean atualizou = result.getBoolean("produto_cadastrado", false);
+                    if (atualizou) {
+                        carregarProdutosDoBanco();
+                    }
+                }
+        );
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // Busca os produtos do banco sempre que a tela é exibida
         carregarProdutosDoBanco();
     }
 
-    private void adicionarProduto() {
-        String entradaText = etCodigoOuNome.getText() != null ? etCodigoOuNome.getText().toString().trim() : "";
-        boolean isCritico = cbCritico.isChecked();
-
-        if (entradaText.isEmpty()) {
-            etCodigoOuNome.setError("Digite o nome ou EAN do produto");
-            return;
-        }
-
-        // Lógica para separar EAN numérico de Nome em texto
-        String nomeProduto = entradaText;
-        String eanProduto = "";
-
-        if (entradaText.matches("\\d+")) {
-            // Se forem só números, consideramos como EAN
-            eanProduto = entradaText;
-            nomeProduto = "Produto " + entradaText; // Nome temporário até consultar API/Base
-        }
-
-        // Cria o novo produto e salva no Room Database
-        Produto novoProduto = new Produto(nomeProduto, eanProduto, isCritico, false);
-        AppDatabase.getInstance(requireContext()).produtoDao().inserir(novoProduto);
-
-        // Limpa os campos de digitação
-        etCodigoOuNome.setText("");
-        cbCritico.setChecked(false);
-
-        Toast.makeText(requireContext(), "Produto adicionado!", Toast.LENGTH_SHORT).show();
-
-        // Atualiza a lista exibida no app
-        carregarProdutosDoBanco();
-    }
-
-    private void carregarProdutosDoBanco() {
-        // Busca os produtos cadastrados no banco local
+    public void carregarProdutosDoBanco() {
         List<Produto> lista = AppDatabase.getInstance(requireContext())
                 .produtoDao()
                 .getProdutosPendentes();
 
-        adapter.setListaProdutos(lista);
+        if (adapter != null) {
+            adapter.setListaProdutos(lista);
+        }
     }
 }

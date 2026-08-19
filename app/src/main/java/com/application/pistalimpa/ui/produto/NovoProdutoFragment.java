@@ -20,7 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class NovoProdutoFragment extends BottomSheetDialogFragment {
 
     public NovoProdutoFragment() {
-        // Construtor público vazio obrigatório
+        // Construtor público vazio
     }
 
     public static NovoProdutoFragment newInstance() {
@@ -39,27 +39,61 @@ public class NovoProdutoFragment extends BottomSheetDialogFragment {
 
         TextInputEditText etNome = view.findViewById(R.id.etNomeProduto);
         TextInputEditText etEan = view.findViewById(R.id.etCodigoEan);
-        CheckBox cbCritico = view.findViewById(R.id.cbCritico);
         Button btnSalvar = view.findViewById(R.id.btnSalvarProduto);
 
         btnSalvar.setOnClickListener(v -> {
             String nome = etNome.getText() != null ? etNome.getText().toString().trim() : "";
             String ean = etEan.getText() != null ? etEan.getText().toString().trim() : "";
-            boolean isCritico = cbCritico.isChecked();
+            boolean isCritico = false;
 
             if (nome.isEmpty()) {
                 etNome.setError("Informe o nome do produto");
                 return;
             }
 
-            // Gravação no Room Database
-            Produto produto = new Produto(nome, ean, isCritico, false);
-            AppDatabase.getInstance(requireContext()).produtoDao().inserir(produto);
+            // Executa a validação e inserção em Thread secundária
+            new Thread(() -> {
+                AppDatabase db = AppDatabase.getInstance(requireContext());
 
-            Toast.makeText(requireContext(), "Produto cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                // 1. Verifica se o EAN já existe no banco
+                if (!ean.isEmpty()) {
+                    Produto produtoExistente = db.produtoDao().buscarPorEan(ean);
 
-            // Fecha o BottomSheet
-            dismiss();
+                    if (produtoExistente != null) {
+                        if (isAdded()) {
+                            requireActivity().runOnUiThread(() -> {
+                                etEan.setError("Este produto já está cadastrado no sistema!");
+                                Toast.makeText(requireContext(), "Produto já existe! Use a busca para reativá-lo.", Toast.LENGTH_LONG).show();
+                            });
+                        }
+                        return; // Aborta a operação de cadastro
+                    }
+                }
+
+                // 2. Se o produto realmente não existe, cadastra como NOVO
+                try {
+                    Produto novoProduto = new Produto(nome, ean, isCritico, false);
+                    db.produtoDao().inserir(novoProduto);
+
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> {
+                            Toast.makeText(requireContext(), "Produto cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                            notificarEFechar();
+                        });
+                    }
+                } catch (Exception e) {
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> etEan.setError("Erro ao cadastrar produto!"));
+                    }
+                }
+            }).start();
         });
+    }
+
+    private void notificarEFechar() {
+        Bundle result = new Bundle();
+        result.putBoolean("produto_cadastrado", true);
+        getParentFragmentManager().setFragmentResult("chave_novo_produto", result);
+        dismiss();
     }
 }
