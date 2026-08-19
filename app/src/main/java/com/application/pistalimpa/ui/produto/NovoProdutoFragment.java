@@ -1,11 +1,11 @@
 package com.application.pistalimpa.ui.produto;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +20,6 @@ import com.google.android.material.textfield.TextInputEditText;
 public class NovoProdutoFragment extends BottomSheetDialogFragment {
 
     public NovoProdutoFragment() {
-        // Construtor público vazio
     }
 
     public static NovoProdutoFragment newInstance() {
@@ -51,39 +50,41 @@ public class NovoProdutoFragment extends BottomSheetDialogFragment {
                 return;
             }
 
-            // Executa a validação e inserção em Thread secundária
-            new Thread(() -> {
-                AppDatabase db = AppDatabase.getInstance(requireContext());
+            Context appContext = requireContext().getApplicationContext();
 
-                // 1. Verifica se o EAN já existe no banco
+            new Thread(() -> {
+                AppDatabase db = AppDatabase.getInstance(appContext);
+
+                // 1. Valida se o EAN já existe
                 if (!ean.isEmpty()) {
                     Produto produtoExistente = db.produtoDao().buscarPorEan(ean);
 
                     if (produtoExistente != null) {
-                        if (isAdded()) {
-                            requireActivity().runOnUiThread(() -> {
+                        if (isAdded() && getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
                                 etEan.setError("Este produto já está cadastrado no sistema!");
-                                Toast.makeText(requireContext(), "Produto já existe! Use a busca para reativá-lo.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(appContext, "Produto já existe!", Toast.LENGTH_LONG).show();
                             });
                         }
-                        return; // Aborta a operação de cadastro
+                        return;
                     }
                 }
 
-                // 2. Se o produto realmente não existe, cadastra como NOVO
                 try {
-                    Produto novoProduto = new Produto(nome, ean, isCritico, false);
+                    Produto novoProduto = new Produto(nome, ean, isCritico, true);
                     db.produtoDao().inserir(novoProduto);
 
-                    if (isAdded()) {
-                        requireActivity().runOnUiThread(() -> {
-                            Toast.makeText(requireContext(), "Produto cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                    if (isAdded() && getActivity() != null) {
+                        getActivity().runOnUiThread(() -> {
+                            Toast.makeText(appContext, "Produto cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
                             notificarEFechar();
                         });
                     }
                 } catch (Exception e) {
-                    if (isAdded()) {
-                        requireActivity().runOnUiThread(() -> etEan.setError("Erro ao cadastrar produto!"));
+                    if (isAdded() && getActivity() != null) {
+                        getActivity().runOnUiThread(() ->
+                                Toast.makeText(appContext, "Erro ao cadastrar produto!", Toast.LENGTH_SHORT).show()
+                        );
                     }
                 }
             }).start();
@@ -91,9 +92,15 @@ public class NovoProdutoFragment extends BottomSheetDialogFragment {
     }
 
     private void notificarEFechar() {
+        if (!isAdded()) return;
+
         Bundle result = new Bundle();
         result.putBoolean("produto_cadastrado", true);
+
         getParentFragmentManager().setFragmentResult("chave_novo_produto", result);
+
+        requireActivity().getSupportFragmentManager().setFragmentResult("chave_novo_produto", result);
+
         dismiss();
     }
 }

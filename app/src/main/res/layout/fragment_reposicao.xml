@@ -58,7 +58,7 @@
                 android:id="@+id/cbCritico"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Crítico (Zerado na Pista)"
+                android:text="Crítico"
                 android:textColor="#D32F2F"
                 android:textStyle="bold" />
 

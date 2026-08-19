@@ -17,37 +17,35 @@ import java.util.List;
 
 public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProdutoViewHolder> {
 
-    private List<Produto> listaCompleta = new ArrayList<>(); // Cópia original dos dados
-    private List<Produto> listaExibida = new ArrayList<>();  // Lista filtrada que aparece na tela
-    private final OnItemClickListener listener;
+    private List<Produto> listaCompleta = new ArrayList<>();
+    private List<Produto> listaExibida = new ArrayList<>();
+    private final OnProdutoRepostoListener listener;
 
-    public interface OnItemClickListener {
-        void onItemClick(Produto produto, boolean isChecked);
+    // Interface limpa e direta para ação de reposição
+    public interface OnProdutoRepostoListener {
+        void onMarcarComoReposto(Produto produto);
     }
 
-    public ProdutoAdapter(OnItemClickListener listener) {
+    public ProdutoAdapter(OnProdutoRepostoListener listener) {
         this.listener = listener;
     }
 
-    // Atualiza a lista quando os dados mudam no banco de dados
     public void setListaProdutos(List<Produto> produtos) {
         this.listaCompleta = new ArrayList<>(produtos);
         this.listaExibida = new ArrayList<>(produtos);
         notifyDataSetChanged();
     }
 
-    // 🔍 O MÉTODO FILTRAR QUE VOCÊ PERGUNTOU:
+    // Método de filtro guardado (desativado por enquanto, mas funcional)
     public void filtrar(String texto) {
         listaExibida.clear();
 
-        if (texto.trim().isEmpty()) {
-            // Se a barra de pesquisa estiver vazia, mostra tudo
+        if (texto == null || texto.trim().isEmpty()) {
             listaExibida.addAll(listaCompleta);
         } else {
             String termo = texto.toLowerCase().trim();
 
             for (Produto produto : listaCompleta) {
-                // Filtra por NOME ou por EAN (Código de Barras)
                 boolean bateComNome = produto.getNome() != null && produto.getNome().toLowerCase().contains(termo);
                 boolean bateComEan = produto.getCodigoEan() != null && produto.getCodigoEan().contains(termo);
 
@@ -56,8 +54,6 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProdutoV
                 }
             }
         }
-
-        // Avisa o RecyclerView para redesenhar os itens filtrados na tela
         notifyDataSetChanged();
     }
 
@@ -73,21 +69,27 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProdutoV
         Produto produto = listaExibida.get(position);
 
         holder.tvNome.setText(produto.getNome());
-        holder.tvEan.setText("EAN: " + produto.getCodigoEan());
 
-        // Destaque se for item crítico
-        if (produto.isCritico()) {
-            holder.tvCriticoTag.setVisibility(View.VISIBLE);
+        if (produto.getCodigoEan() != null && !produto.getCodigoEan().isEmpty()) {
+            holder.tvEan.setText("EAN: " + produto.getCodigoEan());
+            holder.tvEan.setVisibility(View.VISIBLE);
         } else {
-            holder.tvCriticoTag.setVisibility(View.GONE);
+            holder.tvEan.setVisibility(View.GONE);
         }
 
-        holder.cbReposto.setOnCheckedChangeListener(null);
+        // Destaque se for item crítico
+        if (holder.tvCriticoTag != null) {
+            holder.tvCriticoTag.setVisibility(produto.isCritico() ? View.VISIBLE : View.GONE);
+        }
+
+        // Define o estado atual sem disparar eventos
         holder.cbReposto.setChecked(produto.isReposto());
 
-        holder.cbReposto.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        // 🎯 DISPARO DE REPOSIÇÃO: Executado apenas com o clique direto do usuário
+        holder.cbReposto.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onItemClick(produto, isChecked);
+                // Notifica a Fragment/Activity para mudar no Room
+                listener.onMarcarComoReposto(produto);
             }
         });
     }
@@ -105,7 +107,7 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProdutoV
             super(itemView);
             tvNome = itemView.findViewById(R.id.tvNomeProduto);
             tvEan = itemView.findViewById(R.id.tvEanProduto);
-            tvCriticoTag = itemView.findViewById(R.id.tvTagCritico); // opcional
+            tvCriticoTag = itemView.findViewById(R.id.tvTagCritico);
             cbReposto = itemView.findViewById(R.id.cbReposto);
         }
     }
