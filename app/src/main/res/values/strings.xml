@@ -1,17 +1,16 @@
 <resources>
-    <string name="app_name">PistaLimpa</string>
+    <string name="app_name">Coletor+</string>
 
     <string name="hello_blank_fragment">Fragmento</string>
 
-    <string name="menu_reposicao">Reposição na Pista</string>
-    <string name="menu_historico">Histórico</string>
+    <string name="menu_estoque">Consulta</string>
+    <string name="menu_entrada">Entrada</string>
+    <string name="menu_saida">Saída</string>
+    <string name="menu_ajuste">Ajuste</string>
     <string name="menu_settings">Configurações</string>
+    <string name="menu_admin">Administração</string>
 
-    <string name="menu_transform">Reposição</string>
-    <string name="menu_reflow">Histórico</string>
-    <string name="menu_slideshow">Configurações</string>
-
-    <string name="nav_header_title">PistaLimpa</string>
+    <string name="nav_header_title">Coletor+</string>
     <string name="nav_header_subtitle">Gestão de Reposição</string>
     <string name="nav_header_desc">Header de Navegação</string>
     <string name="fab_content_description">Ação rápida</string>

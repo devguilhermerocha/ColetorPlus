@@ -3,19 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_reposicao">
+    app:startDestination="@+id/nav_estoque">
 
     <fragment
-        android:id="@+id/nav_reposicao"
-        android:name="com.application.coletorplus.ui.reposicao.ReposicaoFragment"
-        android:label="@string/menu_reposicao"
-        tools:layout="@layout/fragment_reposicao" />
+        android:id="@+id/nav_estoque"
+        android:name="com.application.coletorplus.ui.produto.ConsultaProdutoFragment"
+        android:label="@string/menu_estoque"
+        tools:layout="@layout/fragment_consulta_produto" />
 
     <fragment
-        android:id="@+id/nav_historico"
-        android:name="com.application.coletorplus.ui.historico.HistoricoFragment"
-        android:label="@string/menu_historico"
-        tools:layout="@layout/fragment_historico" />
+        android:id="@+id/nav_entrada"
+        android:name="com.application.coletorplus.ui.reposicao.EntradaFragment"
+        android:label="@string/menu_entrada"
+        tools:layout="@layout/fragment_entrada" />
+
+    <fragment
+        android:id="@+id/nav_saida"
+        android:name="com.application.coletorplus.ui.reposicao.SaidaFragment"
+        android:label="@string/menu_saida"
+        tools:layout="@layout/fragment_saida" />
+
+    <fragment
+        android:id="@+id/nav_ajuste"
+        android:name="com.application.coletorplus.ui.reposicao.AjusteFragment"
+        android:label="@string/menu_ajuste"
+        tools:layout="@layout/fragment_ajuste" />
 
     <fragment
         android:id="@+id/nav_settings"

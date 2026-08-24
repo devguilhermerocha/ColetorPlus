@@ -1,0 +1,36 @@
+package com.application.coletorplus.ui.reposicao;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.application.coletorplus.databinding.FragmentSaidaBinding;
+
+public class SaidaFragment extends Fragment {
+
+    private FragmentSaidaBinding binding;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentSaidaBinding.inflate(inflater, container, false);
+
+        binding.btnConfirmarSaida.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Baixa de estoque realizada!", Toast.LENGTH_SHORT).show();
+        });
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+}

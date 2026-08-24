@@ -1,25 +1,24 @@
-# Walkthrough - Projeto ColetorPlus Sincronizado
+# Walkthrough - Ajuste de Tamanho dos Ícones
 
-O projeto foi totalmente sincronizado com o novo nome e estrutura, corrigindo os erros de compilação que impediam a execução do app.
+Otimizei o tamanho dos ícones PNG em todas as telas para garantir uma melhor usabilidade e visibilidade, especialmente para as funções de escaneamento e adição de usuários.
 
 ## Mudanças Realizadas
 
-### 1. Banco de Dados Room (`AppDatabase`)
-O arquivo [AppDatabase.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/database/AppDatabase.java) foi corrigido:
-- **Entidades Registradas**: Todas as novas tabelas (`Usuario`, `Endereco`, `Validade`, `ProdutoEndereco`, `ProdutoValidade`) agora estão registradas no Room.
-- **Imports Corrigidos**: As referências a `ProdutoDao` e `ValidadeDao` foram atualizadas (removido o sufixo "DAO" antigo).
-- **Nome do Banco**: O arquivo de banco de dados no dispositivo agora é `coletorplus_database`.
+### 1. Botões de Scanner (Leitor e QR Code)
+Aumentei a área de toque e a exibição das imagens PNG:
+- **Tamanho**: Aumentado de `48dp` para `56dp`.
+- **Preenchimento**: Adicionado `padding="8dp"` e `scaleType="centerInside"` para garantir que o ícone preencha o espaço sem perder a nitidez ou ser cortado.
+- **Telas afetadas**: Estoque/Consulta, Entrada (Rua e Produto), Saída e Ajuste/Avaria.
 
-### 2. Identidade do Aplicativo
-- O `applicationId` no [build.gradle.kts](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/build.gradle.kts) foi atualizado para `"com.application.coletorplus"`. Isso garante que o app seja reconhecido pelo sistema com o novo nome.
-- O teste instrumental foi atualizado para validar o novo nome do pacote.
+### 2. Botão de Adicionar Equipe (+)
+- **Ícone**: O tamanho do ícone de adicionar (`adicionar.png`) dentro do botão foi aumentado para `32dp` usando `app:iconSize`.
+- Isso torna a ação de adicionar um novo usuário muito mais destacada na tela de Gestão de Equipe.
+
+## Como Verificar
+
+1. **Testar Botões de Câmera**: Entre em qualquer aba (como **Entrada**) e veja que os ícones do leitor e do QR code estão maiores e mais centralizados nos botões.
+2. **Testar Tela de Equipe**: Observe que o "+" no botão **ADICIONAR** no topo da lista agora está bem maior e visível.
 
 ## Resultado do Build
 > [!IMPORTANT]
-> O projeto foi compilado com sucesso (`Build finished successfully`). Os erros de SQLite que indicavam "no such table" foram resolvidos ao registrar as entidades corretamente no banco de dados.
-
-## Como testar
-1. O app agora deve abrir diretamente na tela de Login.
-2. Existe um usuário padrão criado automaticamente no primeiro acesso:
-   - **Login (Matrícula)**: `admin`
-   - **Senha**: `1234`
+> O projeto foi compilado com sucesso e os ajustes de dimensão foram aplicados corretamente a todos os layouts XML.

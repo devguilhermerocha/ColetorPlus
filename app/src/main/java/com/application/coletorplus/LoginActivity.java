@@ -34,8 +34,14 @@ public class LoginActivity extends AppCompatActivity {
         String matricula = etMatricula.getText() != null ? etMatricula.getText().toString().trim() : "";
         String senha = etSenha.getText() != null ? etSenha.getText().toString().trim() : "";
 
-        if (matricula.isEmpty() || senha.isEmpty()) {
-            Toast.makeText(this, "Preencha a matrícula e a senha!", Toast.LENGTH_SHORT).show();
+        if (matricula.isEmpty()) {
+            etMatricula.setError("Informe a matrícula");
+            etMatricula.requestFocus();
+            return;
+        }
+        if (senha.isEmpty()) {
+            etSenha.setError("Informe a senha");
+            etSenha.requestFocus();
             return;
         }
 
@@ -48,13 +54,20 @@ public class LoginActivity extends AppCompatActivity {
                 if (usuarioAutenticado != null) {
                     Toast.makeText(this, "Bem-vindo, " + usuarioAutenticado.getNome(), Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent;
+                    if ("MASTER".equals(usuarioAutenticado.getPerfil())) {
+                        intent = new Intent(LoginActivity.this, AdminActivity.class);
+                    } else {
+                        intent = new Intent(LoginActivity.this, MainActivity.class);
+                    }
+
                     intent.putExtra("PERFIL_USUARIO", usuarioAutenticado.getPerfil());
                     intent.putExtra("NOME_USUARIO", usuarioAutenticado.getNome());
                     startActivity(intent);
                     finish();
                 } else {
                     Toast.makeText(this, "Matrícula ou senha incorretos!", Toast.LENGTH_SHORT).show();
+                    etSenha.setText("");
                 }
             });
         }).start();

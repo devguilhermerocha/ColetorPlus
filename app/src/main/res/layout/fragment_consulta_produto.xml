@@ -25,10 +25,12 @@
 
         <ImageButton
             android:id="@+id/btnScannerConsulta"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="8dp"
+            android:scaleType="centerInside"
             android:contentDescription="Escanear EAN"
-            android:src="@android:drawable/ic_menu_camera"
+            android:src="@drawable/leitor"
             android:background="?attr/selectableItemBackgroundBorderless" />
     </LinearLayout>
 

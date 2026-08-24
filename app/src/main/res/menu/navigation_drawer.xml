@@ -5,14 +5,24 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_reposicao"
-            android:icon="@android:drawable/ic_menu_agenda"
-            android:title="@string/menu_reposicao" />
+            android:id="@+id/nav_estoque"
+            android:icon="@drawable/estoque"
+            android:title="@string/menu_estoque" />
 
         <item
-            android:id="@+id/nav_historico"
-            android:icon="@android:drawable/ic_menu_recent_history"
-            android:title="@string/menu_historico" />
+            android:id="@+id/nav_entrada"
+            android:icon="@drawable/entrada"
+            android:title="@string/menu_entrada" />
+
+        <item
+            android:id="@+id/nav_saida"
+            android:icon="@drawable/saida"
+            android:title="@string/menu_saida" />
+
+        <item
+            android:id="@+id/nav_ajuste"
+            android:icon="@drawable/ajuste"
+            android:title="@string/menu_ajuste" />
 
         <item
             android:id="@+id/nav_settings"

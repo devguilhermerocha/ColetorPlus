@@ -1,32 +1,33 @@
-# Implementation Plan - Fix Build Errors and Project Synchronization
+# Plano de Implementação - Ajuste de Tamanho dos Ícones
 
-This plan addresses the compiler errors in `AppDatabase`, synchronizes the `applicationId`, and cleans up residual references to the old project name.
+Este plano visa aumentar a visibilidade dos ícones de scanner (leitor e qrcode) e do botão de adicionar usuário, garantindo que as imagens PNG preencham melhor o espaço.
 
-## Proposed Changes
+## Propostas de Mudanças
 
-### [Database Layer]
+### [Botões de Scanner (ImageButtons)]
+Vou aumentar o tamanho dos botões de `48dp` para `56dp` e ajustar o preenchimento para que o ícone PNG fique maior e mais centralizado.
 
-#### [MODIFY] [AppDatabase.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/database/AppDatabase.java)
-- Correct imports for `ProdutoDao` and `ValidadeDao`.
-- Register all missing entities: `Usuario`, `Endereco`, `Validade`, `ProdutoEndereco`, `ProdutoValidade`.
-- Restore missing abstract methods: `produtoDao()` and `validadeDao()`.
-- Ensure the database name is `coletorplus_database`.
+#### [MODIFY] [fragment_consulta_produto.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_consulta_produto.xml)
+- `btnScannerConsulta`: Tamanho 56dp, padding 4dp, scaleType centerInside.
 
-### [Build Configuration]
+#### [MODIFY] [fragment_entrada.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_entrada.xml)
+- `btnScannerRua` e `btnScannerProdutoEntrada`: Tamanho 56dp, padding 4dp, scaleType centerInside.
 
-#### [MODIFY] [build.gradle.kts](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/build.gradle.kts)
-- Update `applicationId` to `"com.application.coletorplus"`.
+#### [MODIFY] [fragment_saida.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_saida.xml)
+- `btnScannerSaida`: Tamanho 56dp, padding 4dp, scaleType centerInside.
 
-### [Tests]
+#### [MODIFY] [fragment_ajuste.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_ajuste.xml)
+- `btnScannerAvaria`: Tamanho 56dp, padding 4dp, scaleType centerInside.
 
-#### [MODIFY] [ExampleInstrumentedTest.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/androidTest/java/com/application/coletorplus/ExampleInstrumentedTest.java)
-- Update package assertion to match the new `applicationId`.
+### [Botão de Adicionar (MaterialButton)]
+Vou aumentar o tamanho do ícone de "+" no botão de cadastro de equipe.
 
-## Verification Plan
+#### [MODIFY] [fragment_admin_users.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_admin_users.xml)
+- `btnNovoUsuario`: Adicionar `app:iconSize="32dp"` para destacar o ícone de adicionar.
 
-### Automated Tests
-- Run `gradle_build(app:assembleDebug)` to ensure Room generated the implementations and the project compiles.
-- Run `analyze_file` on `AppDatabase.java` after changes.
+## Plano de Verificação
 
-### Manual Verification
-- Verify that the app starts correctly and the initial "admin" user is created in the database.
+### Verificação Manual
+1. Abrir o Preview do Android Studio para cada fragmento.
+2. Confirmar se os ícones de leitor/qrcode estão maiores e mais fáceis de tocar.
+3. Verificar se o botão de adicionar na tela de equipe ficou mais imponente.

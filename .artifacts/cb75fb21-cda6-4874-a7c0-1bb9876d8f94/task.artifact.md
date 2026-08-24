@@ -1,4 +1,6 @@
-- [x] Update `AppDatabase.java` with all entities and correct DAO methods
-- [x] Update `applicationId` in `build.gradle.kts`
-- [x] Update `ExampleInstrumentedTest.java`
-- [x] Verify build
+- [x] Ajustar tamanho do botão de scanner em `fragment_consulta_produto.xml`
+- [x] Ajustar tamanho dos botões de scanner em `fragment_entrada.xml`
+- [x] Ajustar tamanho do botão de scanner em `fragment_saida.xml`
+- [x] Ajustar tamanho do botão de scanner em `fragment_ajuste.xml`
+- [x] Ajustar tamanho do ícone no botão adicionar em `fragment_admin_users.xml`
+- [x] Verificar build

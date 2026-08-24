@@ -14,4 +14,7 @@ public interface UsuarioDao {
 
     @Query("SELECT * FROM usuarios WHERE matricula = :matricula AND senha = :senha LIMIT 1")
     Usuario autenticar(String matricula, String senha);
+
+    @Query("SELECT * FROM usuarios ORDER BY nome ASC")
+    java.util.List<Usuario> listarTodos();
 }
