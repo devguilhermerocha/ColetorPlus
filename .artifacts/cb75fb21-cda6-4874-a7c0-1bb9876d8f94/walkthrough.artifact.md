@@ -1,22 +1,25 @@
-# Walkthrough - Correção de Layout e Organização da UI
+# Walkthrough - Projeto ColetorPlus Sincronizado
 
-A interface do PistaLimpa foi ajustada para seguir as melhores práticas do Android, separando a estrutura de navegação do conteúdo da tela.
+O projeto foi totalmente sincronizado com o novo nome e estrutura, corrigindo os erros de compilação que impediam a execução do app.
 
 ## Mudanças Realizadas
 
-### 1. Correção do `activity_main.xml`
-O arquivo estava com erros de sintaxe (tags não fechadas e duplicadas). Ele foi restaurado para a estrutura padrão do template, que inclui o `DrawerLayout` (menu lateral) e o `NavigationView`.
-- [activity_main.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/activity_main.xml)
+### 1. Banco de Dados Room (`AppDatabase`)
+O arquivo [AppDatabase.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/database/AppDatabase.java) foi corrigido:
+- **Entidades Registradas**: Todas as novas tabelas (`Usuario`, `Endereco`, `Validade`, `ProdutoEndereco`, `ProdutoValidade`) agora estão registradas no Room.
+- **Imports Corrigidos**: As referências a `ProdutoDao` e `ValidadeDao` foram atualizadas (removido o sufixo "DAO" antigo).
+- **Nome do Banco**: O arquivo de banco de dados no dispositivo agora é `coletorplus_database`.
 
-### 2. Nova Interface em `fragment_transform.xml`
-Toda a lógica de busca de produtos, checkbox de itens críticos e a lista de reposição foi movida para o fragmento inicial (`TransformFragment`). Isso garante que a barra superior e o menu lateral funcionem corretamente.
-- [fragment_transform.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_transform.xml)
-- Também foi atualizada a versão para telas maiores: [layout-w600dp/fragment_transform.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout-w600dp/fragment_transform.xml)
+### 2. Identidade do Aplicativo
+- O `applicationId` no [build.gradle.kts](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/build.gradle.kts) foi atualizado para `"com.application.coletorplus"`. Isso garante que o app seja reconhecido pelo sistema com o novo nome.
+- O teste instrumental foi atualizado para validar o novo nome do pacote.
 
-### 3. Layout de Item Criado
-Para que a lista de produtos apareça corretamente, foi criado o arquivo `item_produto.xml`, que define como cada produto será exibido na lista.
-- [item_produto.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/item_produto.xml)
+## Resultado do Build
+> [!IMPORTANT]
+> O projeto foi compilado com sucesso (`Build finished successfully`). Os erros de SQLite que indicavam "no such table" foram resolvidos ao registrar as entidades corretamente no banco de dados.
 
 ## Como testar
-1. Abra o arquivo [fragment_transform.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_transform.xml) no modo **Design** para ver a nova interface.
-2. Execute o app; agora ele deve abrir sem erros e mostrar a tela do PistaLimpa como a tela inicial.
+1. O app agora deve abrir diretamente na tela de Login.
+2. Existe um usuário padrão criado automaticamente no primeiro acesso:
+   - **Login (Matrícula)**: `admin`
+   - **Senha**: `1234`

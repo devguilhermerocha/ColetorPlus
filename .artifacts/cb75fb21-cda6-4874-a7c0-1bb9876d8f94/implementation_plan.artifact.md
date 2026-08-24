@@ -1,39 +1,32 @@
-# Implementation Plan - Ajuste do Activity Main e UI do PistaLimpa
+# Implementation Plan - Fix Build Errors and Project Synchronization
 
-O arquivo `activity_main.xml` atual contém erros de sintaxe XML (tags não fechadas e estrutura incorreta) que impedem a compilação e visualização da tela. Além disso, o conteúdo da interface personalizada do "PistaLimpa" foi inserido diretamente no layout principal da Activity, o que conflita com a arquitetura de Navegação (Navigation Drawer + Bottom Navigation) do projeto.
+This plan addresses the compiler errors in `AppDatabase`, synchronizes the `applicationId`, and cleans up residual references to the old project name.
 
-## Objetivo
-Corrigir os erros de sintaxe no `activity_main.xml` e mover a interface personalizada para o Fragmento inicial (`TransformFragment`), garantindo que o app funcione corretamente e mantenha a estrutura de navegação.
+## Proposed Changes
 
-## User Review Required
+### [Database Layer]
 
-> [!IMPORTANT]
-> O projeto utiliza um template de "Responsive Activity" com Navigation Drawer e Bottom Navigation. A interface personalizada que você criou (título, busca, checkbox, botão adicionar) será movida para o `fragment_transform.xml`, que é a tela inicial do aplicativo. Isso permitirá que você continue usando o menu lateral e a barra superior sem quebrar o código do `MainActivity.java`.
+#### [MODIFY] [AppDatabase.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/database/AppDatabase.java)
+- Correct imports for `ProdutoDao` and `ValidadeDao`.
+- Register all missing entities: `Usuario`, `Endereco`, `Validade`, `ProdutoEndereco`, `ProdutoValidade`.
+- Restore missing abstract methods: `produtoDao()` and `validadeDao()`.
+- Ensure the database name is `coletorplus_database`.
 
-## Propostas de Mudanças
+### [Build Configuration]
 
-### [Layout Principal]
+#### [MODIFY] [build.gradle.kts](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/build.gradle.kts)
+- Update `applicationId` to `"com.application.coletorplus"`.
 
-#### [MODIFY] [activity_main.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/activity_main.xml)
-- Corrigir a sintaxe XML.
-- Restaurar a estrutura padrão com `DrawerLayout`, `NavigationView` e o include do `app_bar_main`.
-- Remover o conteúdo personalizado deste arquivo para evitar conflitos com a lógica do `MainActivity.java`.
+### [Tests]
 
-#### [MODIFY] [fragment_transform.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_transform.xml)
-- Inserir a interface personalizada do PistaLimpa aqui:
-    - Título "PistaLimpa 🛒".
-    - Campo de busca e botão de câmera.
-    - Checkbox "Crítico" e botão "Adicionar".
-    - RecyclerView para a lista de produtos.
+#### [MODIFY] [ExampleInstrumentedTest.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/androidTest/java/com/application/coletorplus/ExampleInstrumentedTest.java)
+- Update package assertion to match the new `applicationId`.
 
-### [Recursos]
+## Verification Plan
 
-#### [NEW] [item_produto.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/item_produto.xml)
-- Criar um layout básico para os itens da lista de produtos, já que ele é referenciado no `RecyclerView`.
+### Automated Tests
+- Run `gradle_build(app:assembleDebug)` to ensure Room generated the implementations and the project compiles.
+- Run `analyze_file` on `AppDatabase.java` after changes.
 
-## Plano de Verificação
-
-### Verificação Manual
-1. Abrir o Preview do Android Studio para o `activity_main.xml` e `fragment_transform.xml`.
-2. Compilar o projeto para garantir que não existam erros de Binding.
-3. Verificar se a interface aparece corretamente ao iniciar o app.
+### Manual Verification
+- Verify that the app starts correctly and the initial "admin" user is created in the database.

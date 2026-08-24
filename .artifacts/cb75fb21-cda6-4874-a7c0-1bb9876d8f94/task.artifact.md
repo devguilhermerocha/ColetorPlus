@@ -1,4 +1,4 @@
-- [x] Corrigir `activity_main.xml` (restaurar DrawerLayout e corrigir sintaxe)
-- [x] Criar layout de item `item_produto.xml`
-- [x] Atualizar `fragment_transform.xml` com a interface personalizada do PistaLimpa
-- [x] Verificar integridade do projeto (Build)
+- [x] Update `AppDatabase.java` with all entities and correct DAO methods
+- [x] Update `applicationId` in `build.gradle.kts`
+- [x] Update `ExampleInstrumentedTest.java`
+- [x] Verify build

@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_reposicao"
-        android:name="com.application.pistalimpa.ui.reposicao.ReposicaoFragment"
+        android:name="com.application.coletorplus.ui.reposicao.ReposicaoFragment"
         android:label="@string/menu_reposicao"
         tools:layout="@layout/fragment_reposicao" />
 
     <fragment
         android:id="@+id/nav_historico"
-        android:name="com.application.pistalimpa.ui.historico.HistoricoFragment"
+        android:name="com.application.coletorplus.ui.historico.HistoricoFragment"
         android:label="@string/menu_historico"
         tools:layout="@layout/fragment_historico" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.application.pistalimpa.ui.settings.SettingsFragment"
+        android:name="com.application.coletorplus.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
 
