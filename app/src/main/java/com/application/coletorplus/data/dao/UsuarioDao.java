@@ -17,4 +17,7 @@ public interface UsuarioDao {
 
     @Query("SELECT * FROM usuarios ORDER BY nome ASC")
     java.util.List<Usuario> listarTodos();
+
+    @androidx.room.Delete
+    void deletar(Usuario usuario);
 }

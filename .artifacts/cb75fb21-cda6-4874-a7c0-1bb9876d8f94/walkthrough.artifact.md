@@ -1,24 +1,30 @@
-# Walkthrough - Ajuste de Tamanho dos Ícones
+# Walkthrough - Sistema de Remoção de Usuários
 
-Otimizei o tamanho dos ícones PNG em todas as telas para garantir uma melhor usabilidade e visibilidade, especialmente para as funções de escaneamento e adição de usuários.
+Implementei a funcionalidade de exclusão de usuários na Gestão de Equipe, permitindo que o administrador remova membros da equipe diretamente pela interface, com segurança e confirmação.
 
 ## Mudanças Realizadas
 
-### 1. Botões de Scanner (Leitor e QR Code)
-Aumentei a área de toque e a exibição das imagens PNG:
-- **Tamanho**: Aumentado de `48dp` para `56dp`.
-- **Preenchimento**: Adicionado `padding="8dp"` e `scaleType="centerInside"` para garantir que o ícone preencha o espaço sem perder a nitidez ou ser cortado.
-- **Telas afetadas**: Estoque/Consulta, Entrada (Rua e Produto), Saída e Ajuste/Avaria.
+### 1. Banco de Dados (Room)
+- Adicionado o método `deletar()` ao [UsuarioDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/UsuarioDao.java), habilitando a remoção física dos registros do banco.
 
-### 2. Botão de Adicionar Equipe (+)
-- **Ícone**: O tamanho do ícone de adicionar (`adicionar.png`) dentro do botão foi aumentado para `32dp` usando `app:iconSize`.
-- Isso torna a ação de adicionar um novo usuário muito mais destacada na tela de Gestão de Equipe.
+### 2. Interface de Usuário (UI)
+- No layout [item_usuario.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/item_usuario.xml), adicionei um botão de ação rápida no lado direito de cada card.
+- **Ícone**: Utilizado o arquivo `remover.png` (o ícone de "-") que você adicionou ao projeto.
 
-## Como Verificar
+### 3. Lógica de Gestão
+No [AdminUserManagementFragment.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/admin/AdminUserManagementFragment.java), implementei:
+- **Confirmação**: Um diálogo de alerta que pergunta se o administrador tem certeza antes de apagar, exibindo o nome do usuário.
+- **Proteção Especial**: O sistema impede a remoção do usuário `admin` padrão, garantindo que o acesso principal nunca seja perdido por acidente.
+- **Atualização Automática**: Assim que um usuário é removido, a lista é recarregada em segundo plano.
 
-1. **Testar Botões de Câmera**: Entre em qualquer aba (como **Entrada**) e veja que os ícones do leitor e do QR code estão maiores e mais centralizados nos botões.
-2. **Testar Tela de Equipe**: Observe que o "+" no botão **ADICIONAR** no topo da lista agora está bem maior e visível.
+## Como Testar
+
+1. Vá na aba **Equipe**.
+2. Toque no ícone de "-" vermelho no card de um operador.
+3. Observe a mensagem de confirmação.
+4. Clique em **Remover** e veja o usuário desaparecer da lista.
+5. Tente remover o `admin` padrão e veja o aviso de segurança.
 
 ## Resultado do Build
 > [!IMPORTANT]
-> O projeto foi compilado com sucesso e os ajustes de dimensão foram aplicados corretamente a todos os layouts XML.
+> O projeto compilou com sucesso e a lógica de exclusão está 100% integrada ao Room e ao RecyclerView.

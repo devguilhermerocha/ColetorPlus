@@ -1,6 +1,5 @@
-- [x] Ajustar tamanho do botão de scanner em `fragment_consulta_produto.xml`
-- [x] Ajustar tamanho dos botões de scanner em `fragment_entrada.xml`
-- [x] Ajustar tamanho do botão de scanner em `fragment_saida.xml`
-- [x] Ajustar tamanho do botão de scanner em `fragment_ajuste.xml`
-- [x] Ajustar tamanho do ícone no botão adicionar em `fragment_admin_users.xml`
-- [x] Verificar build
+- [x] Adicionar `@Delete` no `UsuarioDao.java`
+- [x] Adicionar botão de remover em `item_usuario.xml`
+- [x] Implementar lógica de clique e confirmação no `AdminUserManagementFragment.java`
+- [x] Garantir atualização automática da lista após exclusão
+- [x] Verificar build e fluxo de remoção

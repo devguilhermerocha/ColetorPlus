@@ -41,7 +41,7 @@ public class AdminUserManagementFragment extends Fragment {
 
         // Inicializa o RecyclerView
         binding.rvUserManagement.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new UsuarioAdapter();
+        adapter = new UsuarioAdapter(this::confirmarRemocao);
         binding.rvUserManagement.setAdapter(adapter);
 
         // Configuração do clique do botão para adicionar novo usuário
@@ -50,6 +50,30 @@ public class AdminUserManagementFragment extends Fragment {
         });
 
         carregarUsuarios();
+    }
+
+    private void confirmarRemocao(Usuario usuario) {
+        if ("admin".equals(usuario.getMatricula())) {
+            Toast.makeText(getContext(), "O usuário admin padrão não pode ser removido!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Remover Usuário")
+                .setMessage("Deseja realmente remover " + usuario.getNome() + "?")
+                .setPositiveButton("Remover", (dialog, which) -> {
+                    new Thread(() -> {
+                        AppDatabase.getInstance(requireContext()).usuarioDao().deletar(usuario);
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), "Usuário removido", Toast.LENGTH_SHORT).show();
+                                carregarUsuarios();
+                            });
+                        }
+                    }).start();
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
     }
 
     private void carregarUsuarios() {
@@ -114,6 +138,15 @@ public class AdminUserManagementFragment extends Fragment {
 
     private static class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHolder> {
         private List<Usuario> usuarios = new ArrayList<>();
+        private final OnUserDeleteListener deleteListener;
+
+        public interface OnUserDeleteListener {
+            void onDelete(Usuario usuario);
+        }
+
+        public UsuarioAdapter(OnUserDeleteListener deleteListener) {
+            this.deleteListener = deleteListener;
+        }
 
         public void setUsuarios(List<Usuario> usuarios) {
             this.usuarios = usuarios;
@@ -140,6 +173,12 @@ public class AdminUserManagementFragment extends Fragment {
             } else {
                 holder.binding.tvItemPerfil.setBackgroundColor(0xFF2196F3); // Azul
             }
+
+            holder.binding.btnRemoverUsuario.setOnClickListener(v -> {
+                if (deleteListener != null) {
+                    deleteListener.onDelete(u);
+                }
+            });
         }
 
         @Override

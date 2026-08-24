@@ -1,33 +1,37 @@
-# Plano de Implementação - Ajuste de Tamanho dos Ícones
+# Plano de Implementação - Remoção de Usuários
 
-Este plano visa aumentar a visibilidade dos ícones de scanner (leitor e qrcode) e do botão de adicionar usuário, garantindo que as imagens PNG preencham melhor o espaço.
+Este plano detalha a implementação da funcionalidade de exclusão de usuários na tela de Gestão de Equipe, utilizando o ícone `remover.png`.
 
 ## Propostas de Mudanças
 
-### [Botões de Scanner (ImageButtons)]
-Vou aumentar o tamanho dos botões de `48dp` para `56dp` e ajustar o preenchimento para que o ícone PNG fique maior e mais centralizado.
+### [Banco de Dados]
 
-#### [MODIFY] [fragment_consulta_produto.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_consulta_produto.xml)
-- `btnScannerConsulta`: Tamanho 56dp, padding 4dp, scaleType centerInside.
+#### [MODIFY] [UsuarioDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/UsuarioDao.java)
+- Adicionar o método `@Delete void deletar(Usuario usuario)` para permitir a remoção de registros da tabela de usuários.
 
-#### [MODIFY] [fragment_entrada.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_entrada.xml)
-- `btnScannerRua` e `btnScannerProdutoEntrada`: Tamanho 56dp, padding 4dp, scaleType centerInside.
+### [UI / Layout]
 
-#### [MODIFY] [fragment_saida.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_saida.xml)
-- `btnScannerSaida`: Tamanho 56dp, padding 4dp, scaleType centerInside.
+#### [MODIFY] [item_usuario.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/item_usuario.xml)
+- Adicionar um `ImageButton` no lado direito do card.
+- Usar a imagem `@drawable/remover` como ícone.
+- Configurar o tamanho (ex: 40dp) e remover o fundo padrão para um visual mais limpo.
 
-#### [MODIFY] [fragment_ajuste.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_ajuste.xml)
-- `btnScannerAvaria`: Tamanho 56dp, padding 4dp, scaleType centerInside.
+### [Lógica de Negócio]
 
-### [Botão de Adicionar (MaterialButton)]
-Vou aumentar o tamanho do ícone de "+" no botão de cadastro de equipe.
-
-#### [MODIFY] [fragment_admin_users.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_admin_users.xml)
-- `btnNovoUsuario`: Adicionar `app:iconSize="32dp"` para destacar o ícone de adicionar.
+#### [MODIFY] [AdminUserManagementFragment.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/admin/AdminUserManagementFragment.java)
+- **Interface de Callback**: Criar uma interface (ou usar um listener) no `UsuarioAdapter` para notificar o fragmento sobre o clique de remoção.
+- **Diálogo de Confirmação**: Implementar um `AlertDialog` que pergunta "Deseja realmente remover o usuário [Nome]?" antes de prosseguir.
+- **Ação de Deletar**: Executar a remoção no banco de dados via `AppDatabase` em uma thread secundária.
+- **Atualização da Lista**: Chamar `carregarUsuarios()` após a remoção bem-sucedida.
 
 ## Plano de Verificação
 
 ### Verificação Manual
-1. Abrir o Preview do Android Studio para cada fragmento.
-2. Confirmar se os ícones de leitor/qrcode estão maiores e mais fáceis de tocar.
-3. Verificar se o botão de adicionar na tela de equipe ficou mais imponente.
+1. Abrir a aba **Equipe**.
+2. Localizar o botão de remover (ícone "-") no card de um usuário.
+3. Clicar no botão e verificar se o diálogo de confirmação aparece.
+4. Confirmar a exclusão e verificar se o usuário some da lista imediatamente.
+5. Tentar logar com o usuário removido para garantir que ele não tem mais acesso.
+
+> [!WARNING]
+> Impediremos a remoção do usuário logado atualmente (ou do `admin` principal) para evitar que o administrador se "tranque" fora do sistema.

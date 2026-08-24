@@ -6,11 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.application.coletorplus.databinding.FragmentSaidaBinding;
+import com.application.coletorplus.ui.scanner.ScannerHelper;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 public class SaidaFragment extends Fragment {
 
@@ -25,8 +29,24 @@ public class SaidaFragment extends Fragment {
             Toast.makeText(getContext(), "Baixa de estoque realizada!", Toast.LENGTH_SHORT).show();
         });
 
+        binding.btnScannerSaida.setOnClickListener(v -> {
+            ScannerHelper.escanearEndereco(barcodeRua);
+        });
+
         return binding.getRoot();
     }
+
+    private final ActivityResultLauncher<ScanOptions> barcodeRua= registerForActivityResult(
+            new ScanContract(),
+            result -> {
+                if (result.getContents() != null) {
+                    String codigoLido = result.getContents();
+                    binding.etCodigoSaida.setText(codigoLido);
+                } else {
+                    Toast.makeText(requireContext(), "Leitura cancelada", Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
 
     @Override
     public void onDestroyView() {

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,9 @@ import androidx.fragment.app.Fragment;
 import com.application.coletorplus.data.database.AppDatabase;
 import com.application.coletorplus.data.model.Produto;
 import com.application.coletorplus.databinding.FragmentConsultaProdutoBinding;
+import com.application.coletorplus.ui.scanner.ScannerHelper;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 public class ConsultaProdutoFragment extends Fragment {
 
@@ -24,11 +28,23 @@ public class ConsultaProdutoFragment extends Fragment {
         binding = FragmentConsultaProdutoBinding.inflate(inflater, container, false);
 
         binding.btnScannerConsulta.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Scanner em desenvolvimento...", Toast.LENGTH_SHORT).show();
+            ScannerHelper.escanearProduto(barcodeLauncher);
         });
 
         return binding.getRoot();
     }
+
+    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(
+            new ScanContract(),
+            result -> {
+                if (result.getContents() != null) {
+                    String codigoLido = result.getContents();
+                    binding.etBuscaGenerica.setText(codigoLido);
+                } else {
+                    Toast.makeText(requireContext(), "Leitura cancelada", Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
 
     @Override
     public void onDestroyView() {
