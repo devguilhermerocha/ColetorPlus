@@ -32,7 +32,7 @@ public class AdminActivity extends AppCompatActivity {
         BottomNavigationView navView = binding.bottomNavAdmin;
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_admin_dashboard, R.id.nav_admin_audit, R.id.nav_admin_users, R.id.nav_admin_inventory)
+                R.id.nav_admin_dashboard, R.id.nav_admin_audit, R.id.nav_admin_users, R.id.nav_admin_inventory, R.id.nav_admin_products)
                 .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

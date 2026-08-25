@@ -27,4 +27,13 @@ public interface ProdutoDao {
 
     @Query("SELECT * FROM produtos WHERE codigoEan = :codigoEan LIMIT 1")
     Produto buscarPorEan(String codigoEan);
+
+    @Query("SELECT * FROM produtos ORDER BY nome ASC")
+    List<Produto> listarTodos();
+
+    @Query("SELECT * FROM produtos WHERE nome LIKE '%' || :termo || '%' OR codigoEan LIKE '%' || :termo || '%' ORDER BY nome ASC")
+    List<Produto> buscarPorTermo(String termo);
+
+    @androidx.room.Delete
+    void deletar(Produto produto);
 }

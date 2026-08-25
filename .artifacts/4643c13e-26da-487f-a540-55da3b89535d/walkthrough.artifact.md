@@ -1,26 +1,28 @@
-# Walkthrough - Correção do EnderecoDao e Consistência de Dados
+# Walkthrough - Ajuste Visual de Ícones e Scanner de Endereços
 
-Realizei as correções necessárias no `EnderecoDao` e nos modelos de dados relacionados para garantir que os nomes das tabelas e os tipos das chaves estrangeiras estejam corretos.
+Realizei os ajustes visuais para garantir que os ícones de scanner estejam proporcionais às barras de busca e atualizei a iconografia da gestão de endereços.
 
 ## Alterações Realizadas
 
-### Modelos de Dados
-- **[ProdutoEndereco.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/model/ProdutoEndereco.java)**: O campo `produtoId` foi alterado de `int` para `long` para coincidir com o ID da entidade `Produto`.
-- **[Validade.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/model/Validade.java)**: O campo `produtoId` foi alterado de `int` para `long`.
-- **[ProdutoValidade.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/model/ProdutoValidade.java)**: O campo `produtoId` foi alterado de `int` para `long`.
+### Gestão de Endereços (Admin)
+- **Troca de Ícone**: O botão de scanner na tela de endereços agora utiliza o ícone de **QR Code** (`@drawable/qrcode`), que é o padrão para identificação de locais no projeto.
+- **Ajuste de Proporção**: Configurei o `padding="8dp"` e `scaleType="fitCenter"` no `ImageButton` para que o ícone fique centralizado e com tamanho harmonioso em relação à barra de busca de 48dp.
+- **Detalhe Visual**: Adicionei um ícone de QR Code decorativo dentro do card de detalhes da rua selecionada, reforçando a identidade visual da funcionalidade.
 
-### DAOs
-- **[EnderecoDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/EnderecoDao.java)**:
-    - Corrigido o nome da tabela de `produto` para `produtos`.
-    - Corrigido o nome da tabela de `produto_endereco` para `produto_endereco_ref`.
-    - Corrigido o nome da coluna de `produtoId` para `id` na tabela `produtos` dentro da query de `buscarProdutosPorEndereco`.
-    - Alterado o tipo do parâmetro `produtoId` para `long`.
-- **[ValidadeDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/ValidadeDao.java)**:
-    - Alterado o tipo do parâmetro `produtoId` para `long` no método `buscarPorProduto`.
+### Consulta de Produtos (Geral)
+- **Sincronização de Altura**: Ajustei a altura da barra de busca e do botão de scanner para `52dp`, garantindo que ambos fiquem perfeitamente alinhados.
+- **Respiro Visual**: Aumentei o padding do ícone para evitar que ele toque as bordas, mantendo uma aparência moderna e limpa.
 
-## Verificação
+### Gestão de Produtos (Admin)
+- **Consistência**: Mantive os ícones do `TextInputLayout` com as cores do tema, garantindo que a escala automática do Material Design mantenha a legibilidade.
 
-- A compilação do projeto foi executada com sucesso via Gradle (`app:assembleDebug`), confirmando que o Room processou as anotações corretamente e os tipos estão consistentes.
+## Como Verificar
 
-> [!NOTE]
-> Como o tipo da chave primária em `Produto` é `long`, é essencial que todas as referências externas (Foreign Keys) também utilizem `long` para evitar comportamentos inesperados no banco de dados SQLite.
+1. Acesse **Gestão de Endereços** no Admin:
+   - Observe o novo ícone de QR Code na barra de busca.
+   - Selecione uma rua e veja o ícone azul de QR Code no card de detalhes.
+2. Acesse a **Consulta de Produtos** (tela inicial do usuário):
+   - Note que o botão de scanner agora tem a mesma altura da barra de texto e o ícone está bem centralizado.
+
+> [!TIP]
+> O uso do `scaleType="fitCenter"` com `padding` adequado garante que os ícones não percam a definição em telas com diferentes densidades de pixels.

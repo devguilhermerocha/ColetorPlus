@@ -1,10 +1,6 @@
-# Tarefas: Arrumar EnderecoDao e Consistência de Dados
+# Tarefas: Ajuste Visual de Ícones
 
-- [x] Corrigir modelos de dados (tipos de `produtoId`)
-    - [x] `ProdutoEndereco.java`
-    - [x] `Validade.java`
-    - [x] `ProdutoValidade.java`
-- [x] Corrigir DAOs (queries e tipos)
-    - [x] `EnderecoDao.java`
-    - [x] `ValidadeDao.java`
+- [x] Ajustar `fragment_admin_inventory.xml` (QR Code e Proporções)
+- [x] Ajustar `fragment_admin_products.xml` (Tamanho dos ícones na busca)
+- [x] Ajustar `fragment_consulta_produto.xml` (Sincronização de tamanho)
 - [x] Verificar compilação

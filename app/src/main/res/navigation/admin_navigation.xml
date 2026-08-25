@@ -29,4 +29,10 @@
         android:label="Gestão de Endereços"
         tools:layout="@layout/fragment_admin_inventory" />
 
+    <fragment
+        android:id="@+id/nav_admin_products"
+        android:name="com.application.coletorplus.ui.admin.AdminProductManagementFragment"
+        android:label="Gestão de Produtos"
+        tools:layout="@layout/fragment_admin_products" />
+
 </navigation>

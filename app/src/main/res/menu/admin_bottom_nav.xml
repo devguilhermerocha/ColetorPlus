@@ -21,4 +21,9 @@
         android:icon="@drawable/qrcode"
         android:title="Endereços" />
 
+    <item
+        android:id="@+id/nav_admin_products"
+        android:icon="@drawable/etiqueta"
+        android:title="Produtos" />
+
 </menu>

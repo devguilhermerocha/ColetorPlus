@@ -1,36 +1,29 @@
-# Arrumar o EnderecoDao e Consistência de Dados
+# Ajuste Visual de Ícones e Scanner de Endereços
 
-O objetivo é corrigir inconsistências no `EnderecoDao` em relação aos nomes das tabelas e garantir que os tipos de dados das chaves estrangeiras coincidam com as chaves primárias (especialmente `Produto.id` que é `long`).
+O objetivo é harmonizar o tamanho dos ícones nas barras de busca e atualizar a iconografia da gestão de endereços para usar o símbolo de QR Code.
 
 ## User Review Required
 
-> [!IMPORTANT]
-> Identificamos que `Produto.id` é do tipo `long`, mas várias referências em DAOs e outras entidades (como `ProdutoEndereco` e `Validade`) usam `int`. Corrigiremos isso para evitar erros de compilação do Room e inconsistência de dados.
+> [!NOTE]
+> Vou padronizar o tamanho visual dos ícones em 24dp dentro das barras, garantindo que o espaçamento (padding) deixe a interface mais limpa.
 
 ## Proposed Changes
 
-### Data Models
+### UI & UX
 
-#### [MODIFY] [ProdutoEndereco.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/model/ProdutoEndereco.java)
-- Alterar o tipo de `produtoId` de `int` para `long`.
+#### [MODIFY] [fragment_admin_inventory.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_admin_inventory.xml)
+- Trocar o `src` do `btnBarcodeScanner` de `@drawable/leitor` para `@drawable/qrcode`.
+- Ajustar `padding` e `scaleType` para que o ícone fique proporcional à barra de 48dp.
+- Adicionar um ícone de QR Code decorativo no `cardInventoryDetails` ao lado do nome da rua.
 
-#### [MODIFY] [Validade.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/model/Validade.java)
-- Alterar o tipo de `produtoId` de `int` para `long`.
+#### [MODIFY] [fragment_admin_products.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_admin_products.xml)
+- Ajustar o tamanho visual dos ícones no `TextInputLayout` usando `app:startIconSize` e `app:endIconSize` se disponível, ou ajustar o padding do drawable.
 
-#### [MODIFY] [ProdutoValidade.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/model/ProdutoValidade.java)
-- Alterar o tipo de `produtoId` de `int` para `long`.
-
-### DAOs
-
-#### [MODIFY] [EnderecoDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/EnderecoDao.java)
-- Corrigir o nome da tabela `produto` para `produtos`.
-- Corrigir o nome da tabela `produto_endereco` para `produto_endereco_ref`.
-- Alterar o tipo do parâmetro `produtoId` de `int` para `long` no método `desenderecarProduto`.
-
-#### [MODIFY] [ValidadeDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/ValidadeDao.java)
-- Alterar o tipo do parâmetro `produtoId` de `int` para `long` no método `buscarPorProduto`.
+#### [MODIFY] [fragment_consulta_produto.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_consulta_produto.xml)
+- Sincronizar o tamanho do ícone de scanner com a barra de busca para manter a proporção.
 
 ## Verification Plan
 
-### Automated Tests
-- Executar `gradle_build` para validar o processamento das anotações do Room e a compilação.
+### Manual Verification
+- Verificar se o ícone de QR Code aparece na tela de Gestão de Endereços.
+- Confirmar se os ícones de scanner nas barras de busca estão centralizados e com tamanho "relevante" (nem muito pequenos, nem tocando as bordas).

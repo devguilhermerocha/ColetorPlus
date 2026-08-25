@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnScanNoDialog"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="24dp"
+        android:text="ESCANEAR CÓDIGO"
+        android:textSize="16sp"
+        app:icon="@drawable/leitor"
+        app:iconGravity="textStart"
+        app:iconPadding="12dp"
+        app:iconSize="32dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="OU DIGITE ABAIXO"
+        android:textColor="@color/design_default_color_secondary"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNovoEan"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Código EAN"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/leitor"
+        app:endIconTint="?attr/colorPrimary"
+        app:endIconContentDescription="Escanear Código">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNovoEan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNovoNome"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Nome do Produto">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNovoNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cbNovoCritico"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Produto Crítico (Ruptura)" />
+
+    <TextView
+        android:id="@+id/tvAvisoExistente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="* Produto já cadastrado. Os dados acima serão atualizados."
+        android:textColor="#F44336"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+</LinearLayout>
