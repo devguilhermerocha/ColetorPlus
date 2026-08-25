@@ -1,4 +1,4 @@
-package com.application.coletorplus.ui.produto;
+package com.application.coletorplus.ui.user;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
