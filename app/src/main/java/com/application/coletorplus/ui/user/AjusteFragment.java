@@ -1,4 +1,4 @@
-package com.application.coletorplus.ui.reposicao;
+package com.application.coletorplus.ui.user;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,37 +11,37 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.application.coletorplus.databinding.FragmentSaidaBinding;
+import com.application.coletorplus.databinding.FragmentAjusteBinding;
 import com.application.coletorplus.ui.scanner.ScannerHelper;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
-public class SaidaFragment extends Fragment {
+public class AjusteFragment extends Fragment {
 
-    private FragmentSaidaBinding binding;
+    private FragmentAjusteBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentSaidaBinding.inflate(inflater, container, false);
+        binding = FragmentAjusteBinding.inflate(inflater, container, false);
 
-        binding.btnConfirmarSaida.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Baixa de estoque realizada!", Toast.LENGTH_SHORT).show();
+        binding.btnConfirmarAvaria.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Avaria registrada com sucesso!", Toast.LENGTH_SHORT).show();
         });
 
-        binding.btnScannerSaida.setOnClickListener(v -> {
-            ScannerHelper.escanearEndereco(barcodeRua);
+        binding.btnScannerAvaria.setOnClickListener(v -> {
+            ScannerHelper.escanearProduto(barcodeProduto);
         });
 
         return binding.getRoot();
     }
 
-    private final ActivityResultLauncher<ScanOptions> barcodeRua= registerForActivityResult(
+    private final ActivityResultLauncher<ScanOptions> barcodeProduto = registerForActivityResult(
             new ScanContract(),
             result -> {
                 if (result.getContents() != null) {
                     String codigoLido = result.getContents();
-                    binding.etCodigoSaida.setText(codigoLido);
+                    binding.etCodigoAvaria.setText(codigoLido);
                 } else {
                     Toast.makeText(requireContext(), "Leitura cancelada", Toast.LENGTH_SHORT).show();
                 }

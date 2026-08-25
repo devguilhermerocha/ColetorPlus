@@ -15,16 +15,16 @@ import androidx.room.Index;
 )
 public class ProdutoValidade {
 
-    private int produtoId;
+    private long produtoId;
     private int validadeId;
 
-    public ProdutoValidade(int produtoId, int validadeId) {
+    public ProdutoValidade(long produtoId, int validadeId) {
         this.produtoId = produtoId;
         this.validadeId = validadeId;
     }
 
-    public int getProdutoId() { return produtoId; }
-    public void setProdutoId(int produtoId) { this.produtoId = produtoId; }
+    public long getProdutoId() { return produtoId; }
+    public void setProdutoId(long produtoId) { this.produtoId = produtoId; }
 
     public int getValidadeId() { return validadeId; }
     public void setValidadeId(int validadeId) { this.validadeId = validadeId; }

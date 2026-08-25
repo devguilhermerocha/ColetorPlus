@@ -1,26 +1,23 @@
-# Manter Efeito Laser apenas no Leitor de Código de Barras
+# Corrigir Erros no EnderecoDao
 
-O objetivo é diferenciar a interface do scanner: o leitor de QR Code (Rua/Endereço) permanecerá sem o quadrado e a linha, enquanto o leitor de Código de Barras (Produto) voltará a exibir esses elementos visuais.
+O `EnderecoDao` apresenta erros de compilação porque as consultas SQL (Room) referenciam colunas e tabelas com nomes incorretos, divergindo das classes de modelo (`Endereco` e `ProdutoEndereco`).
 
-## Mudanças Propostas
+## Problemas Identificados
+1.  **Coluna Inexistente:** A classe `Endereco` usa o campo `descricao`, mas o DAO tenta ordenar e filtrar por `rua`.
+2.  **Tabela Incorreta:** A tabela de junção está definida como `produto_endereco_ref` na entidade, mas o DAO tenta deletar da tabela `produto_endereco`.
 
-### UI/Scanner
+## Propostas de Mudanças
 
-#### [MODIFY] [ScannerHelper.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/scanner/ScannerHelper.java)
-- Adicionar um parâmetro extra `"HIDE_VIEWFINDER"` nas configurações do scanner.
-- Definir como `true` para leitura de Endereço (QR Code).
-- Definir como `false` para leitura de Produto (Código de Barras).
+### Data Layer
 
-#### [MODIFY] [CaptureActivityPortrait.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/scanner/CaptureActivityPortrait.java)
-- Ler o parâmetro extra do `Intent`.
-- Esconder o `ViewfinderView` condicionalmente, apenas se o parâmetro `"HIDE_VIEWFINDER"` for verdadeiro.
+#### [MODIFY] [EnderecoDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/EnderecoDao.java)
+- Atualizar todas as ocorrências de `rua` para `descricao` nas queries SQL.
+- Corrigir o nome da tabela no método `desenderecarProduto` de `produto_endereco` para `produto_endereco_ref`.
 
 ## Plano de Verificação
 
-### Testes Manuais
-- **Leitura de Rua (QR Code):** Verificar se a tela continua limpa (sem quadrado/linha).
-- **Leitura de Produto (EAN):** Verificar se o quadrado e a linha laser (vermelha) voltaram a aparecer.
-- Confirmar se ambos os leitores continuam processando os códigos corretamente.
+### Testes de Compilação
+- Executar o comando `./gradlew :app:assembleDebug` para garantir que o Room consiga gerar as implementações do DAO sem erros.
 
-## Perguntas Abertas
-- Nenhuma no momento. A lógica de usar uma flag no Intent permite que a mesma atividade se comporte de formas diferentes conforme a necessidade.
+### Verificação Manual
+- Validar se a busca por ruas e o vínculo de produtos continuam funcionando após a correção dos nomes.

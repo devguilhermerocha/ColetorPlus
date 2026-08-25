@@ -20,10 +20,10 @@ public class Validade {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private int produtoId; // Referência direta ao ID do produto
+    private long produtoId; // Referência direta ao ID do produto
     private long dataVencimento; // Timestamp em milissegundos
 
-    public Validade(int produtoId, long dataVencimento) {
+    public Validade(long produtoId, long dataVencimento) {
         this.produtoId = produtoId;
         this.dataVencimento = dataVencimento;
     }
@@ -31,8 +31,8 @@ public class Validade {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public int getProdutoId() { return produtoId; }
-    public void setProdutoId(int produtoId) { this.produtoId = produtoId; }
+    public long getProdutoId() { return produtoId; }
+    public void setProdutoId(long produtoId) { this.produtoId = produtoId; }
 
     public long getDataVencimento() { return dataVencimento; }
     public void setDataVencimento(long dataVencimento) { this.dataVencimento = dataVencimento; }

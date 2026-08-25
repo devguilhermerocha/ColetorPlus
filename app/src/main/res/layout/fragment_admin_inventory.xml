@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,39 +9,73 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="Gestão de Endereços"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:textStyle="bold" />
 
+    <!-- Barra de Pesquisa de Rua + Câmera -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginBottom="16dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/etSearchInventory"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="48dp"
-            android:hint="Pesquisar Rua ou Gôndola"
+            android:layout_weight="1"
+            android:background="@android:drawable/editbox_background"
             android:drawableStart="@android:drawable/ic_menu_search"
             android:drawablePadding="8dp"
-            android:padding="8dp"
-            android:background="@android:drawable/editbox_background" />
+            android:hint="Pesquisar Rua ou Gôndola"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:padding="8dp" />
 
         <ImageButton
             android:id="@+id/btnBarcodeScanner"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
-            android:src="@android:drawable/ic_menu_camera"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Escanear Código de Barras"
-            android:background="?attr/selectableItemBackgroundBorderless" />
+            android:src="@android:drawable/ic_menu_camera" />
     </LinearLayout>
 
+    <!-- Card Exibido após Selecionar/Criar a Rua -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardInventoryDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="#F0F4F8"
+        app:cardCornerRadius="8dp"
+        app:strokeColor="#1976D2"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvSelectedStreetHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rua: Não Selecionada"
+                android:textColor="#1976D2"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Lista de Endereços/Produtos Cadastrados -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvInventoryManagement"
         android:layout_width="match_parent"

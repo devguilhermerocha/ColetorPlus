@@ -1,3 +1,3 @@
-- [x] Adicionar flag condicional em `ScannerHelper.java`
-- [x] Implementar lógica de exibição seletiva em `CaptureActivityPortrait.java`
-- [x] Validar compilação do projeto
+- [x] Identificar inconsistências de nomes entre DAO e Entidades
+- [/] Corrigir consultas SQL no `EnderecoDao.java`
+- [ ] Validar compilação do projeto com Room

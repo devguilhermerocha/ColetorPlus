@@ -13,19 +13,19 @@
 
     <fragment
         android:id="@+id/nav_entrada"
-        android:name="com.application.coletorplus.ui.reposicao.EntradaFragment"
+        android:name="com.application.coletorplus.ui.user.EntradaFragment"
         android:label="@string/menu_entrada"
         tools:layout="@layout/fragment_entrada" />
 
     <fragment
         android:id="@+id/nav_saida"
-        android:name="com.application.coletorplus.ui.reposicao.SaidaFragment"
+        android:name="com.application.coletorplus.ui.user.SaidaFragment"
         android:label="@string/menu_saida"
         tools:layout="@layout/fragment_saida" />
 
     <fragment
         android:id="@+id/nav_ajuste"
-        android:name="com.application.coletorplus.ui.reposicao.AjusteFragment"
+        android:name="com.application.coletorplus.ui.user.AjusteFragment"
         android:label="@string/menu_ajuste"
         tools:layout="@layout/fragment_ajuste" />
 

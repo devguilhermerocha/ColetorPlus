@@ -1,4 +1,4 @@
-package com.application.coletorplus.ui.reposicao;
+package com.application.coletorplus.ui.user;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ import com.application.coletorplus.R;
 import com.application.coletorplus.data.database.AppDatabase;
 import com.application.coletorplus.data.model.Produto;
 import com.application.coletorplus.ui.produto.NovoProdutoFragment;
-import com.application.coletorplus.ui.produto.ProdutoAdapter;
+import com.application.coletorplus.ui.adapter.ProdutoAdapter;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 

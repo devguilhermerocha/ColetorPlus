@@ -23,7 +23,7 @@ public interface ValidadeDao {
     List<Validade> listarPorVencimento();
 
     @Query("SELECT * FROM validades WHERE produtoId = :produtoId ORDER BY dataVencimento ASC")
-    List<Validade> buscarPorProduto(int produtoId);
+    List<Validade> buscarPorProduto(long produtoId);
 
     @Delete
     void deletar(Validade validade);

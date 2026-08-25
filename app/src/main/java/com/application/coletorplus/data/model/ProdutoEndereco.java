@@ -15,16 +15,16 @@ import androidx.room.Index;
 )
 public class ProdutoEndereco {
 
-    private int produtoId;
+    private long produtoId;
     private int enderecoId;
 
-    public ProdutoEndereco(int produtoId, int enderecoId) {
+    public ProdutoEndereco(long produtoId, int enderecoId) {
         this.produtoId = produtoId;
         this.enderecoId = enderecoId;
     }
 
-    public int getProdutoId() { return produtoId; }
-    public void setProdutoId(int produtoId) { this.produtoId = produtoId; }
+    public long getProdutoId() { return produtoId; }
+    public void setProdutoId(long produtoId) { this.produtoId = produtoId; }
 
     public int getEnderecoId() { return enderecoId; }
     public void setEnderecoId(int enderecoId) { this.enderecoId = enderecoId; }

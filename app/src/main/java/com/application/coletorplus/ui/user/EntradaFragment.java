@@ -1,4 +1,4 @@
-package com.application.coletorplus.ui.reposicao;
+package com.application.coletorplus.ui.user;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
