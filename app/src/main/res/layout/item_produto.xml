@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="EAN: 7891234567890"
+                android:text="EAN: 9999999999999"
                 android:textSize="13sp" />
 
             <TextView

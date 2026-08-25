@@ -1,0 +1,3 @@
+- [x] Adicionar flag condicional em `ScannerHelper.java`
+- [x] Implementar lógica de exibição seletiva em `CaptureActivityPortrait.java`
+- [x] Validar compilação do projeto

@@ -34,7 +34,7 @@ public class EntradaFragment extends Fragment {
         });
 
         binding.btnScannerRua.setOnClickListener(v ->{
-            ScannerHelper.escanearProduto(barcodeRua);
+            ScannerHelper.escanearEndereco(barcodeRua);
         });
 
         return binding.getRoot();

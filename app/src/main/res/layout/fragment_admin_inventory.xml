@@ -13,16 +13,33 @@
         android:textStyle="bold"
         android:layout_marginBottom="16dp" />
 
-    <EditText
-        android:id="@+id/etSearchInventory"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Pesquisar Rua ou Gôndola"
-        android:drawableStart="@android:drawable/ic_menu_search"
-        android:drawablePadding="8dp"
-        android:padding="8dp"
-        android:background="@android:drawable/editbox_background"
-        android:layout_marginBottom="16dp" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/etSearchInventory"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:hint="Pesquisar Rua ou Gôndola"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:drawablePadding="8dp"
+            android:padding="8dp"
+            android:background="@android:drawable/editbox_background" />
+
+        <ImageButton
+            android:id="@+id/btnBarcodeScanner"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:src="@android:drawable/ic_menu_camera"
+            android:contentDescription="Escanear Código de Barras"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvInventoryManagement"

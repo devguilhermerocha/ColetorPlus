@@ -22,6 +22,10 @@ public class AdminInventoryFragment extends Fragment {
         return binding.getRoot();
     }
 
+    private void buscarRua() {
+
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

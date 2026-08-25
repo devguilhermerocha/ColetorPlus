@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PistaLimpa" >
+
         <activity
             android:name=".MainActivity"
             android:exported="false"
@@ -25,28 +26,33 @@
             android:theme="@style/Theme.PistaLimpa.NoActionBar"
             tools:targetApi="24" >
         </activity>
+
+        <!-- Leitor de Câmera em Modo Retrato -->
         <activity
             android:name=".ui.scanner.CaptureActivityPortrait"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:replace="android:screenOrientation" />
+
+        <!-- Tela de Login (Ponto de entrada do app) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- Painel Gerencial do perfil Admin/Master -->
         <activity
             android:name=".AdminActivity"
             android:exported="false"
             android:label="Painel Administrativo"
             android:theme="@style/Theme.PistaLimpa.NoActionBar" />
+
     </application>
 
 </manifest>

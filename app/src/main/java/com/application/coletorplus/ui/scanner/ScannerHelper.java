@@ -12,9 +12,9 @@ public class ScannerHelper {
         options.setDesiredBarcodeFormats(ScanOptions.QR_CODE); // Foco exclusivo em QR Code
         options.setCameraId(0);
         options.setBeepEnabled(true);
-        options.setBarcodeImageEnabled(false);
         options.setOrientationLocked(false);
         options.setCaptureActivity(CaptureActivityPortrait.class);
+        options.addExtra("HIDE_VIEWFINDER", true); // Esconder visual no QR Code
 
         launcher.launch(options);
     }
@@ -27,6 +27,7 @@ public class ScannerHelper {
         options.setBarcodeImageEnabled(false);
         options.setOrientationLocked(false);
         options.setCaptureActivity(CaptureActivityPortrait.class);
+        options.addExtra("HIDE_VIEWFINDER", false); // Manter visual no Código de Barras
 
         launcher.launch(options);
     }

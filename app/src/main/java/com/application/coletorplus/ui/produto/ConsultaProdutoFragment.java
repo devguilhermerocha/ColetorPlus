@@ -11,8 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.application.coletorplus.data.database.AppDatabase;
-import com.application.coletorplus.data.model.Produto;
 import com.application.coletorplus.databinding.FragmentConsultaProdutoBinding;
 import com.application.coletorplus.ui.scanner.ScannerHelper;
 import com.journeyapps.barcodescanner.ScanContract;
