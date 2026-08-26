@@ -11,14 +11,12 @@ public class Produto {
 
     private String nome;
     private String codigoEan;
-    private boolean isCritico;
-    private boolean isReposto;
+    private int quantidadeTotal;
 
-    public Produto(String nome, String codigoEan, boolean isCritico, boolean isReposto) {
+    public Produto(String nome, String codigoEan, int quantidadeTotal) {
         this.nome = nome;
         this.codigoEan = codigoEan;
-        this.isCritico = isCritico;
-        this.isReposto = isReposto;
+        this.quantidadeTotal = quantidadeTotal;
     }
 
     public long getId() {
@@ -45,19 +43,11 @@ public class Produto {
         this.codigoEan = codigoEan;
     }
 
-    public boolean isCritico() {
-        return isCritico;
+    public int getQuantidadeTotal() {
+        return quantidadeTotal;
     }
 
-    public void setCritico(boolean critico) {
-        isCritico = critico;
-    }
-
-    public boolean isReposto() {
-        return isReposto;
-    }
-
-    public void setReposto(boolean reposto) {
-        isReposto = reposto;
+    public void setQuantidadeTotal(int quantidadeTotal) {
+        this.quantidadeTotal = quantidadeTotal;
     }
 }

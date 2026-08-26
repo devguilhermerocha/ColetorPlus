@@ -44,6 +44,11 @@ public interface EnderecoDao {
             "WHERE pe.enderecoId = :enderecoId")
     List<Produto> buscarProdutosPorEndereco(int enderecoId);
 
+    @Query("SELECT e.* FROM enderecos e " +
+            "INNER JOIN produto_endereco_ref pe ON e.id = pe.enderecoId " +
+            "WHERE pe.produtoId = :produtoId")
+    List<Endereco> buscarEnderecosPorProduto(long produtoId);
+
     // 7. Exclui a rua do banco de dados
     @Delete
     void deletarEndereco(Endereco endereco);

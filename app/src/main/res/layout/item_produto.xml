@@ -38,24 +38,16 @@
                 android:layout_marginTop="4dp"
                 android:text="EAN: 9999999999999"
                 android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/tvTagCritico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="GÔNDOLA ZERADA"
-                android:textColor="#D32F2F"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/cbReposto"
+        <TextView
+            android:id="@+id/tvQuantidadeProduto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reposto" />
+            android:text="Qtd: 0"
+            android:textColor="@color/purple_500"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

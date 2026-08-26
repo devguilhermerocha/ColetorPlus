@@ -6,57 +6,65 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <RelativeLayout
+    <!-- Cabeçalho com Título e Botões de Ação -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:layout_marginBottom="16dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Catálogo de Produtos"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnScanProductCat"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/btnNovoProduto"
-            android:layout_marginEnd="8dp"
-            android:text="LER"
-            app:icon="@drawable/leitor"
-            app:iconSize="32dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNovoProduto"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:text="NOVO"
             app:icon="@drawable/adicionar"
-            app:iconSize="32dp" />
-    </RelativeLayout>
+            app:iconSize="24dp" />
+    </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilSearchProduct"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <!-- Barra de Pesquisa e Scanner -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:hint="Buscar por nome ou EAN"
-        app:startIconDrawable="@android:drawable/ic_menu_search"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/leitor">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etSearchProduct"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <EditText
+            android:id="@+id/etSearchInventory"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@android:drawable/editbox_background"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:drawablePadding="8dp"
+            android:hint="Pesquisar produto..."
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:padding="8dp" />
+
+        <ImageButton
+            android:id="@+id/btnBarcodeScanner"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Escanear Código de Barras"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/qrcode"
+            app:tint="?attr/colorPrimary" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProductManagement"

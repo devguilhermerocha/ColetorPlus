@@ -189,7 +189,7 @@ public class AdminInventoryFragment extends Fragment {
         binding.cardInventoryDetails.setVisibility(View.VISIBLE);
 
         if (produtoAdapter == null) {
-            produtoAdapter = new ProdutoAdapter(null);
+            produtoAdapter = new ProdutoAdapter();
         }
         binding.rvInventoryManagement.setAdapter(produtoAdapter);
 

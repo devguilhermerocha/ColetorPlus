@@ -3,7 +3,6 @@ package com.application.coletorplus.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,15 +18,8 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProdutoV
 
     private List<Produto> listaCompleta = new ArrayList<>();
     private List<Produto> listaExibida = new ArrayList<>();
-    private final OnProdutoRepostoListener listener;
 
-    // Interface limpa e direta para ação de reposição
-    public interface OnProdutoRepostoListener {
-        void onMarcarComoReposto(Produto produto);
-    }
-
-    public ProdutoAdapter(OnProdutoRepostoListener listener) {
-        this.listener = listener;
+    public ProdutoAdapter() {
     }
 
     public void setListaProdutos(List<Produto> produtos) {
@@ -67,7 +59,6 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProdutoV
     @Override
     public void onBindViewHolder(@NonNull ProdutoViewHolder holder, int position) {
         Produto produto = listaExibida.get(position);
-
         holder.tvNome.setText(produto.getNome());
 
         if (produto.getCodigoEan() != null && !produto.getCodigoEan().isEmpty()) {
@@ -77,21 +68,7 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProdutoV
             holder.tvEan.setVisibility(View.GONE);
         }
 
-        // Destaque se for item crítico
-        if (holder.tvCriticoTag != null) {
-            holder.tvCriticoTag.setVisibility(produto.isCritico() ? View.VISIBLE : View.GONE);
-        }
-
-        // Define o estado atual sem disparar eventos
-        holder.cbReposto.setChecked(produto.isReposto());
-
-        // 🎯 DISPARO DE REPOSIÇÃO: Executado apenas com o clique direto do usuário
-        holder.cbReposto.setOnClickListener(v -> {
-            if (listener != null) {
-                // Notifica a Fragment/Activity para mudar no Room
-                listener.onMarcarComoReposto(produto);
-            }
-        });
+        holder.tvQuantidade.setText("Qtd: " + produto.getQuantidadeTotal());
     }
 
     @Override
@@ -100,15 +77,13 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProdutoV
     }
 
     static class ProdutoViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNome, tvEan, tvCriticoTag;
-        CheckBox cbReposto;
+        TextView tvNome, tvEan, tvQuantidade;
 
         public ProdutoViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNome = itemView.findViewById(R.id.tvNomeProduto);
             tvEan = itemView.findViewById(R.id.tvEanProduto);
-            tvCriticoTag = itemView.findViewById(R.id.tvTagCritico);
-            cbReposto = itemView.findViewById(R.id.cbReposto);
+            tvQuantidade = itemView.findViewById(R.id.tvQuantidadeProduto);
         }
     }
 }

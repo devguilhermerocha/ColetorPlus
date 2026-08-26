@@ -1,33 +1,40 @@
-# Implementation Plan - Style Update for Adjustment Screen
+# Plan: Refactor "Ajuste / Avaria" with Stock Subtraction
 
-This plan details the changes to align `fragment_ajuste.xml` with the "Admin Novo Produto" and "Admin Produto" screen styles, using modern Material Design components like `TextInputLayout` and `MaterialButton`.
+Modernize the "Ajuste / Avaria" screen and implement the logic to subtract a specific quantity of damaged/lost items from the product's total stock.
 
 ## User Review Required
 
-> [!NOTE]
-> The layout will be simplified by removing the `MaterialCardView`, matching the clean look of the admin dialogs. The scanner functionality will be more prominent with a large button at the top, consistent with the admin product entry flow.
+> [!IMPORTANT]
+> - **Quantity Removal**: The new "Quantidade" field will directly **subtract** the entered value from the `Produto.quantidadeTotal` in the database.
+> - **Visual Consistency**: The screen will now match the Admin/Catalog style with a prominent scanner button and a clean layout.
 
 ## Proposed Changes
 
-### UI Components
+### 1. UI Modernization
 
 #### [MODIFY] [fragment_ajuste.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_ajuste.xml)
-- Increase root padding to `24dp`.
-- Add a large `MaterialButton` for scanning at the top.
-- Add "OU DIGITE ABAIXO" label.
-- Replace `EditText` + `ImageButton` for EAN with a `TextInputLayout` (OutlinedBox) with `endIconDrawable="@drawable/leitor"`.
-- Convert "Registrar Avaria" to a themed `MaterialButton`.
-- Remove the surrounding `MaterialCardView`.
+- **Layout Overhaul**: Remove the `MaterialCardView` and increase padding to `24dp`.
+- **Top Scanner**: Add a large `MaterialButton` ("ESCANEAR PRODUTO").
+- **EAN Input**: Horizontal layout with `EditText` and a scanner `ImageButton` icon.
+- **Quantity Field**: Add a `TextInputLayout` for "Quantidade a Remover (Avaria)".
+- **Reason Field**: Keep "Motivo (Opcional)" as an outlined `TextInputLayout`.
+- **Action Button**: Use a red-themed `MaterialButton` for "Confirmar Baixa de Avaria".
+
+### 2. Logic Implementation
 
 #### [MODIFY] [AjusteFragment.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/user/AjusteFragment.java)
-- Add `setEndIconOnClickListener` for the new EAN `TextInputLayout`.
-- Ensure all view bindings match the new layout IDs.
+- **Confirm Adjustment**:
+    - Validate that EAN and Quantity are provided.
+    - Fetch the product from the database via EAN.
+    - **Subtract** the entered quantity from the product's `quantidadeTotal`.
+    - Update the product in the database.
+    - Show a success toast with the updated stock level.
+- **Scanner Integration**: Connect both the big button and the small icon to the `ScannerHelper`.
 
 ## Verification Plan
 
 ### Manual Verification
-- Deploy the app and navigate to the "Ajuste / Avaria" screen.
-- Verify that the layout matches the "Admin Novo Produto" style (e.g., big scan button, outlined text fields).
-- Test the big scan button to ensure it triggers the barcode scanner.
-- Test the scanner icon inside the EAN field to ensure it also triggers the barcode scanner.
-- Test the "Registrar Avaria" button to ensure the toast message still appears.
+1. **Initial Stock**: Check a product's stock in the "Consulta" screen (e.g., 20 units).
+2. **Adjustment**: Go to "Avaria", scan/type the EAN, enter "5" as quantity, and confirm.
+3. **Verify**: Go back to "Consulta" and verify the stock is now **15**.
+4. **Validation**: Try to adjust a product that doesn't exist and verify the error message.

@@ -22,10 +22,12 @@ public class Validade {
 
     private long produtoId; // Referência direta ao ID do produto
     private long dataVencimento; // Timestamp em milissegundos
+    private int quantidade; // Quantidade deste lote específico
 
-    public Validade(long produtoId, long dataVencimento) {
+    public Validade(long produtoId, long dataVencimento, int quantidade) {
         this.produtoId = produtoId;
         this.dataVencimento = dataVencimento;
+        this.quantidade = quantidade;
     }
 
     public int getId() { return id; }
@@ -36,4 +38,7 @@ public class Validade {
 
     public long getDataVencimento() { return dataVencimento; }
     public void setDataVencimento(long dataVencimento) { this.dataVencimento = dataVencimento; }
+
+    public int getQuantidade() { return quantidade; }
+    public void setQuantidade(int quantidade) { this.quantidade = quantidade; }
 }

@@ -1,6 +1,7 @@
 package com.application.coletorplus.ui.admin;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.application.coletorplus.R;
 import com.application.coletorplus.data.database.AppDatabase;
 import com.application.coletorplus.data.model.Produto;
+import com.application.coletorplus.data.model.Validade;
 import com.application.coletorplus.databinding.FragmentAdminProductsBinding;
 import com.application.coletorplus.databinding.ItemProdutoBinding;
 import com.application.coletorplus.ui.scanner.ScannerHelper;
@@ -39,8 +45,12 @@ public class AdminProductManagementFragment extends Fragment {
     // Campos temporários para o diálogo de edição/cadastro via scanner
     private EditText etDialogEan;
     private EditText etDialogNome;
-    private CheckBox cbDialogCritico;
+    private EditText etDialogQuantidade;
+    private EditText etDialogValidade;
     private TextView tvDialogAviso;
+
+    private long selectedValidadeTimestamp = 0;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
     // Flag para saber de onde veio o scan
     private boolean isScanningForDialog = false;
@@ -78,18 +88,12 @@ public class AdminProductManagementFragment extends Fragment {
         binding.btnNovoProduto.setOnClickListener(v -> showAddProductDialog());
         
         // Scanner direto no catálogo
-        binding.btnScanProductCat.setOnClickListener(v -> {
+        binding.btnBarcodeScanner.setOnClickListener(v -> {
             isScanningForDialog = false;
             ScannerHelper.escanearProduto(barcodeLauncher);
         });
 
-        // Ícone de scanner na busca
-        binding.tilSearchProduct.setEndIconOnClickListener(v -> {
-            isScanningForDialog = false;
-            ScannerHelper.escanearProduto(barcodeLauncher);
-        });
-
-        binding.etSearchProduct.addTextChangedListener(new TextWatcher() {
+        binding.etSearchInventory.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -154,24 +158,25 @@ public class AdminProductManagementFragment extends Fragment {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_admin_novo_produto, null);
         etDialogEan = view.findViewById(R.id.etNovoEan);
         etDialogNome = view.findViewById(R.id.etNovoNome);
-        cbDialogCritico = view.findViewById(R.id.cbNovoCritico);
+        etDialogQuantidade = view.findViewById(R.id.etNovoQuantidade);
+        etDialogValidade = view.findViewById(R.id.etNovoValidade);
         tvDialogAviso = view.findViewById(R.id.tvAvisoExistente);
-        com.google.android.material.textfield.TextInputLayout tilEan = view.findViewById(R.id.tilNovoEan);
-        com.google.android.material.button.MaterialButton btnScanDialog = view.findViewById(R.id.btnScanNoDialog);
+        android.widget.ImageButton btnScanDialog = view.findViewById(R.id.btnScanEanDialog);
 
-        // Ação do botão de scanner GRANDE no diálogo
+        selectedValidadeTimestamp = 0;
+
+        // Configurar DatePicker para Validade
+        if (etDialogValidade != null) {
+            etDialogValidade.setOnClickListener(v -> showDatePicker());
+        }
+
+        // Ação do botão de scanner ao lado do EAN no diálogo
         if (btnScanDialog != null) {
             btnScanDialog.setOnClickListener(v -> {
                 isScanningForDialog = true;
                 ScannerHelper.escanearProduto(barcodeLauncher);
             });
         }
-
-        // Ação do ícone de leitor dentro do TextInputLayout
-        tilEan.setEndIconOnClickListener(v -> {
-            isScanningForDialog = true;
-            ScannerHelper.escanearProduto(barcodeLauncher);
-        });
 
         // Busca automática ao digitar o EAN completo
         etDialogEan.addTextChangedListener(new TextWatcher() {
@@ -189,25 +194,53 @@ public class AdminProductManagementFragment extends Fragment {
         builder.setPositiveButton("Salvar", (dialog, which) -> {
             String nome = etDialogNome.getText().toString().trim();
             String ean = etDialogEan.getText().toString().trim();
-            boolean isCritico = cbDialogCritico.isChecked();
+            String qtdStr = etDialogQuantidade.getText().toString().trim();
+            int quantidade = qtdStr.isEmpty() ? 0 : Integer.parseInt(qtdStr);
 
             if (!nome.isEmpty() && !ean.isEmpty()) {
                 new Thread(() -> {
                     Produto existente = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
+                    long produtoId;
+                    
                     if (existente != null) {
                         // Atualiza existente
                         existente.setNome(nome);
-                        existente.setCritico(isCritico);
                         AppDatabase.getInstance(requireContext()).produtoDao().atualizar(existente);
+                        produtoId = existente.getId();
                     } else {
                         // Insere novo
-                        Produto novo = new Produto(nome, ean, isCritico, false);
-                        AppDatabase.getInstance(requireContext()).produtoDao().inserir(novo);
+                        Produto novo = new Produto(nome, ean, 0); // Quantidade inicial será calculada abaixo
+                        produtoId = AppDatabase.getInstance(requireContext()).produtoDao().inserir(novo);
+                    }
+
+                    // Se uma validade e quantidade foram informadas, adiciona como um novo lote
+                    if (selectedValidadeTimestamp > 0 && quantidade > 0) {
+                        Validade novoLote = new Validade(produtoId, selectedValidadeTimestamp, quantidade);
+                        AppDatabase.getInstance(requireContext()).validadeDao().inserirValidade(novoLote);
+                        
+                        // Recalcula a quantidade total do produto baseada em todos os lotes (validades)
+                        int novaSomaTotal = AppDatabase.getInstance(requireContext()).validadeDao().getSomaQuantidades(produtoId);
+                        
+                        // Busca o produto atualizado para garantir que temos o objeto correto para update
+                        Produto pParaUpdate = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
+                        if (pParaUpdate != null) {
+                            pParaUpdate.setQuantidadeTotal(novaSomaTotal);
+                            AppDatabase.getInstance(requireContext()).produtoDao().atualizar(pParaUpdate);
+                        }
+                    } else if (existente == null && quantidade > 0) {
+                        // Caso especial: Novo produto sem validade mas com quantidade (adiciona validade genérica ou apenas seta)
+                        // Para este fluxo, vamos forçar que quantidade venha com validade ou tratar apenas a soma.
+                        // Se não tem validade, a quantidade total pode ser setada diretamente se for novo.
+                        Produto pParaUpdate = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
+                        if (pParaUpdate != null) {
+                            pParaUpdate.setQuantidadeTotal(quantidade);
+                            AppDatabase.getInstance(requireContext()).produtoDao().atualizar(pParaUpdate);
+                        }
                     }
                     
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Dados salvos com sucesso!", Toast.LENGTH_SHORT).show();
                             carregarProdutos();
                         });
                     }
@@ -221,14 +254,47 @@ public class AdminProductManagementFragment extends Fragment {
         builder.show();
     }
 
+    private void showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+        if (selectedValidadeTimestamp > 0) {
+            calendar.setTimeInMillis(selectedValidadeTimestamp);
+        }
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                requireContext(),
+                (view, year, month, dayOfMonth) -> {
+                    Calendar selected = Calendar.getInstance();
+                    selected.set(year, month, dayOfMonth);
+                    selectedValidadeTimestamp = selected.getTimeInMillis();
+                    etDialogValidade.setText(dateFormat.format(selected.getTime()));
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
+    }
+
     private void buscarProdutoParaDialogo(String ean) {
         new Thread(() -> {
             Produto p = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
             if (p != null && getActivity() != null) {
+                // Buscar validade vinculada
+                List<Validade> validades = AppDatabase.getInstance(requireContext()).validadeDao().buscarPorProduto(p.getId());
+                
                 getActivity().runOnUiThread(() -> {
                     etDialogNome.setText(p.getNome());
-                    cbDialogCritico.setChecked(p.isCritico());
+                    etDialogQuantidade.setText(String.valueOf(p.getQuantidadeTotal()));
                     tvDialogAviso.setVisibility(View.VISIBLE);
+                    
+                    if (!validades.isEmpty()) {
+                        Validade v = validades.get(validades.size() - 1); // Pega a última cadastrada
+                        selectedValidadeTimestamp = v.getDataVencimento();
+                        etDialogValidade.setText(dateFormat.format(v.getDataVencimento()));
+                    } else {
+                        selectedValidadeTimestamp = 0;
+                        etDialogValidade.setText("");
+                    }
                 });
             } else if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
@@ -245,7 +311,7 @@ public class AdminProductManagementFragment extends Fragment {
                 getActivity().runOnUiThread(() -> {
                     if (p != null) {
                         // Produto existe, filtra na lista
-                        binding.etSearchProduct.setText(ean);
+                        binding.etSearchInventory.setText(ean);
                         buscarProdutos(ean);
                     } else {
                         // Produto não existe, abre cadastro
@@ -291,10 +357,7 @@ public class AdminProductManagementFragment extends Fragment {
             holder.binding.tvNomeProduto.setText(p.getNome());
             holder.binding.tvEanProduto.setText("EAN: " + p.getCodigoEan());
             
-            holder.binding.tvTagCritico.setVisibility(p.isCritico() ? View.VISIBLE : View.GONE);
-            
-            // Na área de admin, escondemos o checkbox de reposição
-            holder.binding.cbReposto.setVisibility(View.GONE);
+            holder.binding.tvQuantidadeProduto.setText("Qtd: " + p.getQuantidadeTotal());
             
             // Usamos o clique longo ou um botão para deletar
             // Como item_produto parece não ter botão de remover, vamos adicionar suporte a clique no item ou adaptar

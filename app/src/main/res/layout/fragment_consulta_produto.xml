@@ -23,6 +23,7 @@
             android:background="@android:drawable/editbox_background"
             android:padding="12dp"
             android:hint="Buscar por Nome, EAN ou Rua/Endereço"
+            android:imeOptions="actionSearch"
             android:inputType="text" />
 
         <ImageButton
@@ -69,6 +70,16 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/tvQuantidadeConsulta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Quantidade Total: 0"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/purple_500" />
+
+            <TextView
                 android:id="@+id/tvEnderecoConsulta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,13 +95,6 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:gravity="end">
-
-                <Button
-                    android:id="@+id/btnVincularEndereco"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Endereçar (Rua)" />
 
             </LinearLayout>
         </LinearLayout>

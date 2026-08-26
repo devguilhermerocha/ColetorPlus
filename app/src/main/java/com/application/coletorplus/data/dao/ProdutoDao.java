@@ -18,13 +18,7 @@ public interface ProdutoDao {
 
     @Update
     void atualizar(Produto produto);
-
-    @Query("SELECT * FROM produtos WHERE isReposto = 0 ORDER BY isCritico DESC, id DESC")
-    List<Produto> getProdutosPendentes();
-
-    @Query("SELECT * FROM produtos WHERE isReposto = 1 ORDER BY id DESC")
-    List<Produto> getProdutosHistorico();
-
+    
     @Query("SELECT * FROM produtos WHERE codigoEan = :codigoEan LIMIT 1")
     Produto buscarPorEan(String codigoEan);
 

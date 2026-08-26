@@ -25,6 +25,9 @@ public interface ValidadeDao {
     @Query("SELECT * FROM validades WHERE produtoId = :produtoId ORDER BY dataVencimento ASC")
     List<Validade> buscarPorProduto(long produtoId);
 
+    @Query("SELECT SUM(quantidade) FROM validades WHERE produtoId = :produtoId")
+    int getSomaQuantidades(long produtoId);
+
     @Delete
     void deletar(Validade validade);
 }
