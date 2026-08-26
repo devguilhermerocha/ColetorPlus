@@ -1,4 +1,4 @@
-- [x] Add `imeOptions="actionSearch"` to `fragment_consulta_produto.xml`
-- [x] Refactor `realizarConsulta` for better thread safety and user feedback
-- [x] Add `TextWatcher` to handle card visibility on text clear
+- [x] Standardize `fragment_ajuste.xml` (Search bar style, header)
+- [x] Update `AjusteFragment.java` to make batch selection mandatory
+- [x] Refine `fragment_ajuste.xml` (Card style consistency)
 - [x] Verify build and functionality

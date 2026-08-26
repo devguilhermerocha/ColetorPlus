@@ -1,26 +1,26 @@
-# Walkthrough - Fixed Product Query Visibility
+# Walkthrough - Standardized Adjustment Screen with Mandatory Batch Selection
 
-I have fixed the issue where the product query results (details card) were not appearing correctly in the `ConsultaProdutoFragment`.
+I have completed the standardization of the **Ajuste / Avaria** screen, ensuring it matches the visual identity of the rest of the application and enforcing stricter inventory management rules.
 
 ## Changes Made
 
-### UI Fixes
-- **Keyboard Action**: Added `imeOptions="actionSearch"` to the search field. This ensures that the mobile keyboard displays a proper "Search" icon, making it easier for users to trigger the query.
-- **Dynamic Visibility**: Added a `TextWatcher` that automatically hides the product details card when the search field is cleared, providing a cleaner UI experience.
+### UI Standardization
+- **Unified Search Bar**: Refactored the top search and scanner section to be identical to the **Consulta** screen. It now uses a gray background (`#F5F5F5`), proper padding, and consistent component heights (`52dp`).
+- **Card Consistency**: Updated the product information card to match the elevation (`3dp`) and styling used in the **Consulta** results, providing a cohesive feel throughout the app.
 
-### Logic Improvements
-- **Thread Safety**: Refactored `realizarConsulta` to capture the application context safely before launching background threads. This prevents potential `IllegalStateException` crashes.
-- **User Feedback**: Added a "Buscando: ..." toast message to indicate that the search is processing, especially useful for slower database lookups.
-- **Null Safety**: Added checks to ensure the `binding` object is valid before updating the UI from a background thread, preventing crashes during fragment transitions.
+### Strict Inventory Logic
+- **Mandatory Batch Selection**: Registering an adjustment now strictly requires selecting a **Data do Lote (Validade)** from the dropdown.
+- **Validation Feedbacks**:
+    - If a user tries to confirm without selecting a batch, they receive a clear warning: "Selecione o lote primeiro!".
+    - The hold-to-confirm mechanism (3 seconds) remains active and only proceeds if a valid batch is selected.
+- **Data Integrity**: Subtractions are now explicitly tied to the selected lot, ensuring that expiration tracking remains accurate even during adjustments.
 
 ## Verification Results
 
 ### Automated Tests
-- [x] **Gradle Build**: Successfully compiled the project.
+- [x] **Gradle Build**: Successfully compiled. All view IDs and logic updates are verified.
 
 ### Manual Verification Recommended
-1. Open the **Consulta de Produto** screen.
-2. Type a product name and press the **Search** key on your keyboard.
-3. You should see a "Buscando..." message, followed by the product details card.
-4. Try clearing the search bar; the card should disappear.
-5. Test the scanner button to ensure it still triggers the search automatically.
+1. **Visual Check**: Verify that the top bar in "Ajuste" and "Consulta" looks the same.
+2. **Strictness Test**: Scan a product, enter a quantity, and hold the button for 3s **without selecting a batch**. Verify that no adjustment is made and the warning toast appears.
+3. **Correct Flow**: Select a batch, hold for 3s, and verify the successful subtraction from that specific lot.

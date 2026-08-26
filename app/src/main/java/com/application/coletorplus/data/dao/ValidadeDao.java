@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface ValidadeDao {
 
-    @Insert
+    @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
     long inserirValidade(Validade validade);
 
     @Insert

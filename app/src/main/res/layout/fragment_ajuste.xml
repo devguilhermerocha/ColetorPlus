@@ -14,70 +14,138 @@
         android:textStyle="bold"
         android:layout_marginBottom="16dp" />
 
-    <com.google.android.material.card.MaterialCardView
+    <!-- Barra de Pesquisa Padronizada -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#F5F5F5"
+        android:padding="4dp"
+        android:layout_marginBottom="16dp">
+
+        <EditText
+            android:id="@+id/etCodigoAvaria"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:background="@android:drawable/editbox_background"
+            android:padding="12dp"
+            android:hint="Ler EAN do Produto"
+            android:imeOptions="actionSearch"
+            android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/btnScanEanAvaria"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="Escanear EAN"
+            android:src="@drawable/leitor"
+            app:tint="?attr/colorPrimary"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+    </LinearLayout>
+
+    <!-- Info do Produto (Oculto inicialmente) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardInfoAvaria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="12dp">
 
             <TextView
+                android:id="@+id/tvNomeInfoAvaria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Baixa por Quebra ou Perda"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvEstoqueInfoAvaria"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="8dp">
-
-                <EditText
-                    android:id="@+id/etCodigoAvaria"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:hint="Ler EAN do Produto Avariado"
-                    android:inputType="text" />
-
-                <ImageButton
-                    android:id="@+id/btnScannerAvaria"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:padding="8dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/leitor"
-                    android:contentDescription="Escanear Avaria"
-                    android:background="?attr/selectableItemBackgroundBorderless" />
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Motivo (Opcional)">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etMotivoAvaria"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/btnConfirmarAvaria"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="16dp"
-                android:text="Registrar Avaria"
-                android:backgroundTint="@android:color/holo_red_dark" />
+                android:layout_marginTop="2dp"
+                android:textSize="12sp"
+                android:textColor="?attr/colorPrimary" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+
+    <!-- Seleção de Data do Lote (Material Dropdown) -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilDataLoteAvaria"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Selecionar Lote (Obrigatório)">
+
+        <AutoCompleteTextView
+            android:id="@+id/etDataLoteAvaria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo Quantidade -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilQuantidadeAvaria"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Quantidade a Remover">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etQuantidadeAvaria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo Motivo -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMotivoAvaria"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Motivo (Opcional)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMotivoAvaria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvHintAvaria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="Segure por 3s para CONFIRMAR a baixa (avaria)"
+        android:textColor="#D32F2F"
+        android:textSize="11sp"
+        android:textStyle="italic" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConfirmarAvaria"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Confirmar Baixa de Avaria"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
 
 </LinearLayout>
