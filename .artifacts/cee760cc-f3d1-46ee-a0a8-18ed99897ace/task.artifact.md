@@ -1,8 +1,5 @@
-- [x] Standardize `Produto.java` (Nome and EAN to UPPER)
-- [x] Standardize `Endereco.java` (Descricao to UPPER)
-- [x] Update `EntradaFragment.java` to use `.toUpperCase()` for all inputs
-- [x] Update `ConsultaProdutoFragment.java` to use `.toUpperCase()`
-- [x] Update `AjusteFragment.java` to use `.toUpperCase()`
-- [x] Update `AdminProductManagementFragment.java` to use `.toUpperCase()`
-- [x] Update `AdminInventoryFragment.java` to use `.toUpperCase()`
-- [x] Verify build and consistency
+- [ ] Update `EnderecoDao.java` with bulk desendereçar method
+- [ ] Refactor `fragment_saida.xml` (Search bar, street info card, RecyclerView)
+- [ ] Create `SaidaBatchAdapter.java` for product removal list
+- [ ] Update `SaidaFragment.java` with identification and removal logic
+- [ ] Verify build and functionality
