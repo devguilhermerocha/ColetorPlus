@@ -113,7 +113,7 @@ public class AdminInventoryFragment extends Fragment {
     private void buscarRua() {
         if (binding == null || binding.etSearchInventory == null) return;
 
-        String termoRua = binding.etSearchInventory.getText().toString().trim();
+        String termoRua = binding.etSearchInventory.getText().toString().trim().toUpperCase();
 
         if (termoRua.isEmpty()) {
             carregarTodasAsRuas();

@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:padding="16dp">
 
     <TextView
@@ -14,56 +16,85 @@
         android:textStyle="bold"
         android:layout_marginBottom="16dp" />
 
+    <!-- Card de Ação Rápida -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp">
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ação Rápida de Retirada"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="8dp">
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:layout_marginBottom="16dp">
 
-                <EditText
-                    android:id="@+id/etCodigoSaida"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCodigoSaida"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Ler EAN do Produto ou Local"
-                    android:inputType="text" />
+                    android:hint="Ler EAN do Produto ou Local">
 
-                <ImageButton
-                    android:id="@+id/btnScannerSaida"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:padding="8dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/leitor"
-                    android:contentDescription="Escanear Saída"
-                    android:background="?attr/selectableItemBackgroundBorderless" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCodigoSaida"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardScannerSaida"
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
+                    android:layout_marginStart="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    app:cardUseCompatPadding="true">
+
+                    <ImageButton
+                        android:id="@+id/btnScannerSaida"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="2dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/qrcode"
+                        app:tint="?attr/colorPrimary"
+                        android:background="?attr/selectableItemBackground"
+                        android:contentDescription="Escanear Saída" />
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnConfirmarSaida"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="16dp"
+                android:layout_height="64dp"
                 android:text="Confirmar Retirada"
-                android:backgroundTint="@android:color/holo_blue_dark" />
+                app:icon="@drawable/saida"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:iconSize="28dp"
+                app:backgroundTint="@android:color/holo_blue_dark" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -71,6 +102,6 @@
         android:id="@+id/rvSaidaItens"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>

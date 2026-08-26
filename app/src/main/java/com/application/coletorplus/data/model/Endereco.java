@@ -18,12 +18,12 @@ public class Endereco {
     private String descricao; // Ex: "Rua 03 - Gondola B" ou QR Code da Rua
 
     public Endereco(@NonNull String descricao) {
-        this.descricao = descricao;
+        this.descricao = descricao.toUpperCase();
     }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
     @NonNull public String getDescricao() { return descricao; }
-    public void setDescricao(@NonNull String descricao) { this.descricao = descricao; }
+    public void setDescricao(@NonNull String descricao) { this.descricao = descricao.toUpperCase(); }
 }

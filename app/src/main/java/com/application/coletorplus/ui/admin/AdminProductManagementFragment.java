@@ -192,8 +192,8 @@ public class AdminProductManagementFragment extends Fragment {
         builder.setView(view);
 
         builder.setPositiveButton("Salvar", (dialog, which) -> {
-            String nome = etDialogNome.getText().toString().trim();
-            String ean = etDialogEan.getText().toString().trim();
+            String nome = etDialogNome.getText().toString().trim().toUpperCase();
+            String ean = etDialogEan.getText().toString().trim().toUpperCase();
             String qtdStr = etDialogQuantidade.getText().toString().trim();
             int quantidade = qtdStr.isEmpty() ? 0 : Integer.parseInt(qtdStr);
 
@@ -305,21 +305,23 @@ public class AdminProductManagementFragment extends Fragment {
     }
 
     private void processarScanCatalogo(String ean) {
+        if (ean == null) return;
+        final String eanUpper = ean.trim().toUpperCase();
         new Thread(() -> {
-            Produto p = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
+            Produto p = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(eanUpper);
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (p != null) {
                         // Produto existe, filtra na lista
-                        binding.etSearchInventory.setText(ean);
-                        buscarProdutos(ean);
+                        binding.etSearchInventory.setText(eanUpper);
+                        buscarProdutos(eanUpper);
                     } else {
                         // Produto não existe, abre cadastro
                         Toast.makeText(getContext(), "Produto não cadastrado. Abrindo novo cadastro...", Toast.LENGTH_SHORT).show();
                         showAddProductDialog();
                         // Preenche o EAN no diálogo recém aberto
                         if (etDialogEan != null) {
-                            etDialogEan.setText(ean);
+                            etDialogEan.setText(eanUpper);
                         }
                     }
                 });

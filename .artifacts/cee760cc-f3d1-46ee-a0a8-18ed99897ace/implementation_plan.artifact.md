@@ -1,31 +1,47 @@
-# Plan: Standardize EAN Input and Enforce Batch Selection
+# Implementation Plan - Multi-Option Unaddressing (Saída)
 
-Refactor the "Ajuste / Avaria" screen to use a standard `TextInputLayout` for EAN entry, matching the rest of the form fields, while ensuring batch selection is mandatory for adjustments.
+Implement a flexible unaddressing system in the **Saída** screen. Operators will be able to identify a warehouse location and then either remove all products from it at once or selectively remove individual products from a list.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Bulk Unaddressing**: A new "Zerar Local" (Clear Location) button will allow removing all product links from a street in one tap.
+> - **Selective Unaddressing**: A real-time list of all products currently at the identified location will be displayed, each with a remove button.
 
 ## Proposed Changes
 
-### 1. UI Standardization
+### 1. Database & DAO Extensions
 
-#### [MODIFY] [fragment_ajuste.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_ajuste.xml)
-- **EAN Field**: Replace the horizontal `LinearLayout` + `EditText` combination with a single `TextInputLayout` (style `OutlinedBox`).
-- **Scanner Integration**: Add the scanner icon as the `endIconDrawable` of the `TextInputLayout`.
-- **Consistency**: This ensures all inputs on the screen (EAN, Batch, Quantity, Reason) look and behave identically according to Material Design standards.
+#### [MODIFY] [EnderecoDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/EnderecoDao.java)
+- Add `@Query("DELETE FROM produto_endereco_ref WHERE enderecoId = :enderecoId")`
+  `void desenderecarTodosProdutos(int enderecoId);`
 
-### 2. Logic Refinement
+### 2. UI Refinement
 
-#### [MODIFY] [AjusteFragment.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/user/AjusteFragment.java)
-- **View Binding**: Update references from `binding.btnScanEanAvaria` to `binding.tilCodigoAvaria.setEndIconOnClickListener`.
-- **Mandatory Batch Check**:
-    - Reinforce the check in `confirmarBaixaAvaria` to ensure `selectedValidadeTimestamp` is strictly required.
-    - Added user feedback in `setupRemovalHoldButton` to warn about missing batch selection during the hold attempt.
+#### [MODIFY] [fragment_saida.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_saida.xml)
+- **Street Input**: Standardize as an `AutoCompleteTextView` inside an Outlined `TextInputLayout` (UPPER standard).
+- **Street Info Card**: Add a confirmation card to show the identified street name.
+- **Bulk Action**: Add a "LIMPAR TODO LOCAL" button (red-outlined style).
+- **Product List**: Configure `rvSaidaItens` to show products currently in the identified street.
+
+### 3. Adapter Creation
+
+#### [NEW] `SaidaBatchAdapter.java`
+- Adapter to display products stored at the selected location.
+- Each item will show: Product Name, EAN, and a "Minus" icon to desendereçar that specific product.
+
+### 4. Logic Implementation
+
+#### [MODIFY] [SaidaFragment.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/user/SaidaFragment.java)
+- **Street Identification**: Fetch products from `buscarProdutosPorEndereco` as soon as a street is confirmed.
+- **Bulk Removal**: Implement `desenderecarTodosProdutos` logic.
+- **Individual Removal**: Implement `desenderecarProduto` logic for each list item.
+- **Auto-Refresh**: Automatically refresh the list after any removal operation.
 
 ## Verification Plan
 
 ### Manual Verification
-1. **Standardized Look**: Open "Avaria" and verify all fields are `OutlinedBox` style.
-2. **Scanner Integration**: Tap the scanner icon inside the EAN field and verify it works.
-3. **Mandatory Batch**:
-    - Enter an EAN and quantity.
-    - Try to hold the confirm button **without** picking a batch.
-    - Verify the "Selecione o lote primeiro!" toast appears.
-4. **Successful Adjustment**: Select a batch, hold for 3s, and verify stock subtraction.
+1. **Selection**: Scan or type a street name. Verify the info card appears and the product list is populated.
+2. **Individual Removal**: Tap the "-" icon on a product. Verify it disappears from the list and its link is removed (verify in Consulta screen).
+3. **Bulk Removal**: Tap "LIMPAR TODO LOCAL". Verify the list becomes empty and all products previously there are now unaddressed.
+4. **Consistency**: Ensure all inputs and buttons follow the standardized measurements (64dp height, 28dp icons).

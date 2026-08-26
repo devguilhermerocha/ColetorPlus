@@ -40,7 +40,6 @@ public class AjusteFragment extends Fragment {
     private long selectedValidadeTimestamp = 0;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
-    // ⏱️ Controle do Temporizador de 3 Segundos (Hold Button)
     private final Handler handlerHold = new Handler(Looper.getMainLooper());
     private Runnable runnableHold;
     private boolean isHoldCompleted = false;
@@ -56,11 +55,11 @@ public class AjusteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.btnScanEanAvaria.setOnClickListener(v -> ScannerHelper.escanearProduto(barcodeProduto));
+        binding.tilCodigoAvaria.setEndIconOnClickListener(v -> escanear());
 
         binding.etCodigoAvaria.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) {
-                buscarProduto(binding.etCodigoAvaria.getText().toString().trim());
+                buscarProduto(binding.etCodigoAvaria.getText().toString().trim().toUpperCase());
                 return true;
             }
             return false;
@@ -76,24 +75,25 @@ public class AjusteFragment extends Fragment {
             }
         });
 
+        // Configuração do Dropdown de Validade
         binding.etDataLoteAvaria.setOnItemClickListener((parent, view1, position, id) -> {
             if (position < lotesAtuais.size()) {
                 selectedValidadeTimestamp = lotesAtuais.get(position).getDataVencimento();
             }
         });
 
-        // ⏱️ Configura a mecânica de segurar por 3 segundos
+        // ⏱️ Configura a mecânica de segurar por 3 segundos (Obrigatório)
         setupRemovalHoldButton();
     }
 
-    /**
-     * ⏱️ Configura o toque contínuo de 3 segundos para confirmar a baixa/avaria
-     */
+    private void escanear() {
+        ScannerHelper.escanearProduto(barcodeProduto);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private void setupRemovalHoldButton() {
         runnableHold = () -> {
             isHoldCompleted = true;
-            // Executa a baixa apenas quando completar os 3 segundos segurados
             confirmarBaixaAvaria();
         };
 
@@ -101,37 +101,42 @@ public class AjusteFragment extends Fragment {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     isHoldCompleted = false;
-                    // Inicia a contagem de 3000ms (3 segundos)
                     handlerHold.postDelayed(runnableHold, 3000);
-                    Toast.makeText(getContext(), "Segure por 3 segundos para dar baixa...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Mantenha pressionado para dar baixa...", Toast.LENGTH_SHORT).show();
                     v.setPressed(true);
                     return true;
 
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    // Cancela o temporizador se soltar antes de 3 segundos
                     handlerHold.removeCallbacks(runnableHold);
                     v.setPressed(false);
 
-                    if (!isHoldCompleted && event.getAction() == MotionEvent.ACTION_UP) {
-                        if (selectedValidadeTimestamp == 0) {
-                            Toast.makeText(getContext(), "Selecione o lote primeiro!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "Mantenha pressionado para confirmar a baixa!", Toast.LENGTH_SHORT).show();
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        v.performClick();
+                        if (!isHoldCompleted) {
+                            if (selectedValidadeTimestamp == 0) {
+                                Toast.makeText(getContext(), "Selecione o lote primeiro!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Segure por 3 segundos para confirmar!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                     return true;
             }
             return false;
         });
+        
+        // Listener vazio apenas para habilitar o feedback visual de clique/press do MaterialButton
+        binding.btnConfirmarAvaria.setOnClickListener(v -> {});
     }
 
     private void buscarProduto(String ean) {
-        if (ean.isEmpty() || getContext() == null) return;
+        if (ean == null || ean.trim().isEmpty() || getContext() == null) return;
+        final String eanUpper = ean.trim().toUpperCase();
 
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(requireContext());
-            Produto p = db.produtoDao().buscarPorEan(ean);
+            Produto p = db.produtoDao().buscarPorEan(eanUpper);
 
             if (p != null) {
                 produtoAtual = p;
@@ -268,7 +273,7 @@ public class AjusteFragment extends Fragment {
             new ScanContract(),
             result -> {
                 if (result.getContents() != null) {
-                    String codigoLido = result.getContents();
+                    String codigoLido = result.getContents().trim().toUpperCase();
                     binding.etCodigoAvaria.setText(codigoLido);
                     buscarProduto(codigoLido);
                 } else {

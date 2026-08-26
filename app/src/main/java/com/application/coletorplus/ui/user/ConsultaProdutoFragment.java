@@ -44,7 +44,7 @@ public class ConsultaProdutoFragment extends Fragment {
 
         binding.etBuscaGenerica.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) {
-                realizarConsulta(binding.etBuscaGenerica.getText().toString());
+                realizarConsulta(binding.etBuscaGenerica.getText().toString().toUpperCase());
                 return true;
             }
             return false;
@@ -65,7 +65,7 @@ public class ConsultaProdutoFragment extends Fragment {
             new ScanContract(),
             result -> {
                 if (result.getContents() != null) {
-                    String codigoLido = result.getContents();
+                    String codigoLido = result.getContents().trim().toUpperCase();
                     binding.etBuscaGenerica.setText(codigoLido);
                     realizarConsulta(codigoLido);
                 } else {
@@ -77,7 +77,7 @@ public class ConsultaProdutoFragment extends Fragment {
     private void realizarConsulta(String termo) {
         if (termo == null || termo.trim().isEmpty() || getContext() == null) return;
 
-        String busca = termo.trim();
+        String busca = termo.trim().toUpperCase();
         Context context = getContext().getApplicationContext();
         
         if (getActivity() != null) {

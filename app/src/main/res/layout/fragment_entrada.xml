@@ -1,117 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:fillViewport="true"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Entrada / Endereçar"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Passo 1: Leitura do Endereço (Rua/Gôndola) -->
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="8dp">
+        android:orientation="vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:padding="16dp">
 
-        <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entrada / Endereçar"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Passo 1: Vincular Produto (Múltiplos) -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1. Identificar Local (QR Code)"
-                android:textStyle="bold" />
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="8dp">
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
-                <EditText
-                    android:id="@+id/etCodigoRua"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:hint="QR Code da Rua / Gôndola"
-                    android:inputType="text" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1. Escanear Produtos"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
 
-                <ImageButton
-                    android:id="@+id/btnScannerRua"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:padding="8dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/qrcode"
-                    android:contentDescription="Escanear QR Code Rua"
-                    android:background="?attr/selectableItemBackgroundBorderless" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCodigoProdutoEntrada"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="EAN do Produto">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCodigoProdutoEntrada"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionDone"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardScannerProdutoEntrada"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_marginStart="12dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true">
+
+                        <ImageButton
+                            android:id="@+id/btnScannerProdutoEntrada"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/leitor"
+                            app:tint="?attr/colorPrimary"
+                            android:background="?attr/selectableItemBackground"
+                            android:contentDescription="Escanear Produto" />
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
-    <!-- Passo 2: Leitura do Produto -->
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp">
-
-        <LinearLayout
+        <!-- Lista de Produtos Escaneados -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEntradaProdutos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="8dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2. Vincular Produto (EAN)"
-                android:textStyle="bold" />
+        <!-- Passo 2: Identificar Local -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardEnderecoEntrada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="8dp">
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
-                <EditText
-                    android:id="@+id/etCodigoProdutoEntrada"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2. Local de Destino"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCodigoRua"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="EAN do Produto"
-                    android:inputType="text" />
+                    android:hint="Nome ou QR Code da Rua">
 
-                <ImageButton
-                    android:id="@+id/btnScannerProdutoEntrada"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:padding="8dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/leitor"
-                    android:contentDescription="Escanear EAN Produto"
-                    android:background="?attr/selectableItemBackgroundBorderless" />
+                    <AutoCompleteTextView
+                        android:id="@+id/etCodigoRua"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardScannerRua"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_marginStart="12dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true">
+
+                        <ImageButton
+                            android:id="@+id/btnScannerRua"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/qrcode"
+                            app:tint="?attr/colorPrimary"
+                            android:background="?attr/selectableItemBackground"
+                            android:contentDescription="Escanear QR Code Rua" />
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <!-- Info da Rua (Oculto inicialmente) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardInfoRuaIdentificada"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="#F5F5F5"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/qrcode"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/tvRuaIdentificada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Rua: Não identificada"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnConfirmarEntrada"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="Confirmar Endereçamento"
+                    app:icon="@drawable/entrada"
+                    app:iconGravity="textStart"
+                    app:iconPadding="12dp"
+                    app:iconSize="28dp" />
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-            <Button
-                android:id="@+id/btnConfirmarEntrada"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="16dp"
-                android:text="Confirmar Endereçamento" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-</LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

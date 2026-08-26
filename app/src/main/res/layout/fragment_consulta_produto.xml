@@ -4,49 +4,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:padding="16dp">
 
-    <!-- Barra de Pesquisa Unificada -->
-    <LinearLayout
+    <!-- Card de Pesquisa -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="#F5F5F5"
-        android:padding="4dp">
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        app:cardUseCompatPadding="true">
 
-        <EditText
-            android:id="@+id/etBuscaGenerica"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_weight="1"
-            android:background="@android:drawable/editbox_background"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:padding="12dp"
-            android:hint="Buscar por Nome, EAN ou Rua/Endereço"
-            android:imeOptions="actionSearch"
-            android:inputType="text" />
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
-        <ImageButton
-            android:id="@+id/btnScannerConsulta"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:padding="10dp"
-            android:scaleType="fitCenter"
-            android:contentDescription="Escanear EAN"
-            android:src="@drawable/leitor"
-            app:tint="?attr/colorPrimary"
-            android:background="?attr/selectableItemBackgroundBorderless" />
-    </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilBuscaGenerica"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Buscar por Nome, EAN ou Endereço">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBuscaGenerica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardScannerConsulta"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginStart="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
+
+                <ImageButton
+                    android:id="@+id/btnScannerConsulta"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="Escanear EAN"
+                    android:src="@drawable/leitor"
+                    app:tint="?attr/colorPrimary"
+                    android:background="?attr/selectableItemBackground" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Card de Exibição dos Detalhes do Produto -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardDetalhesProduto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:visibility="gone"
         app:cardCornerRadius="8dp"
-        app:cardElevation="3dp">
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,16 +114,6 @@
                 android:text="Endereço: Não Vinculado"
                 android:textColor="#1976D2"
                 android:textStyle="bold" />
-
-            <!-- Ações Rápidas -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp"
-                android:gravity="end">
-
-            </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -104,6 +121,6 @@
         android:id="@+id/rvResultadoBusca"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="4dp" />
 
 </LinearLayout>

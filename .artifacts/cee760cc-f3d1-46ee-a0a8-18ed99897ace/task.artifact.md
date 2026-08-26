@@ -1,4 +1,8 @@
-- [x] Standardize `fragment_ajuste.xml` (Search bar style, header)
-- [x] Update `AjusteFragment.java` to make batch selection mandatory
-- [x] Refine `fragment_ajuste.xml` (Card style consistency)
-- [x] Verify build and functionality
+- [x] Standardize `Produto.java` (Nome and EAN to UPPER)
+- [x] Standardize `Endereco.java` (Descricao to UPPER)
+- [x] Update `EntradaFragment.java` to use `.toUpperCase()` for all inputs
+- [x] Update `ConsultaProdutoFragment.java` to use `.toUpperCase()`
+- [x] Update `AjusteFragment.java` to use `.toUpperCase()`
+- [x] Update `AdminProductManagementFragment.java` to use `.toUpperCase()`
+- [x] Update `AdminInventoryFragment.java` to use `.toUpperCase()`
+- [x] Verify build and consistency

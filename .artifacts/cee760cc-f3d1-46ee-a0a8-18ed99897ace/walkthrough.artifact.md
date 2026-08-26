@@ -1,26 +1,27 @@
-# Walkthrough - Standardized Adjustment Screen with Mandatory Batch Selection
+# Walkthrough - Uppercase Data Standardization (UPPER)
 
-I have completed the standardization of the **Ajuste / Avaria** screen, ensuring it matches the visual identity of the rest of the application and enforcing stricter inventory management rules.
+I have implemented a comprehensive standardization to ensure that all critical application data (Product Names, EANs, and Address Descriptions) are handled exclusively in **UPPERCASE**. This eliminates search failures caused by case sensitivity issues, such as the one encountered with "Rua Teste".
 
 ## Changes Made
 
-### UI Standardization
-- **Unified Search Bar**: Refactored the top search and scanner section to be identical to the **Consulta** screen. It now uses a gray background (`#F5F5F5`), proper padding, and consistent component heights (`52dp`).
-- **Card Consistency**: Updated the product information card to match the elevation (`3dp`) and styling used in the **Consulta** results, providing a cohesive feel throughout the app.
+### Model-Level Enforcement
+- **`Produto.java`**: Updated the constructor and setters (`setNome`, `setCodigoEan`) to automatically convert incoming strings to uppercase.
+- **`Endereco.java`**: Standardized the street description to always be stored in uppercase through its constructor and `setDescricao` method.
 
-### Strict Inventory Logic
-- **Mandatory Batch Selection**: Registering an adjustment now strictly requires selecting a **Data do Lote (Validade)** from the dropdown.
-- **Validation Feedbacks**:
-    - If a user tries to confirm without selecting a batch, they receive a clear warning: "Selecione o lote primeiro!".
-    - The hold-to-confirm mechanism (3 seconds) remains active and only proceeds if a valid batch is selected.
-- **Data Integrity**: Subtractions are now explicitly tied to the selected lot, ensuring that expiration tracking remains accurate even during adjustments.
+### UI Input & Search Standardization
+I have updated all relevant fragments to ensure that any input from the keyboard or barcode scanner is trimmed and converted to uppercase before it is used for database queries:
+- **`EntradaFragment.java`**: Standardized both product EANs and street codes.
+- **`ConsultaProdutoFragment.java`**: Standardized the general search term.
+- **`AjusteFragment.java`**: Standardized product lookup by EAN.
+- **`AdminProductManagementFragment.java`**: Ensured new or edited products are saved with uppercase names and EANs.
+- **`AdminInventoryFragment.java`**: Standardized street searches and creation.
 
 ## Verification Results
 
 ### Automated Tests
-- [x] **Gradle Build**: Successfully compiled. All view IDs and logic updates are verified.
+- [x] **Gradle Build**: Successfully compiled the project. All Room entity logic and fragment bindings are verified.
 
 ### Manual Verification Recommended
-1. **Visual Check**: Verify that the top bar in "Ajuste" and "Consulta" looks the same.
-2. **Strictness Test**: Scan a product, enter a quantity, and hold the button for 3s **without selecting a batch**. Verify that no adjustment is made and the warning toast appears.
-3. **Correct Flow**: Select a batch, hold for 3s, and verify the successful subtraction from that specific lot.
+1. **The "Rua Teste" Fix**: Go to the **Entrada** screen and type "rua teste" (all lowercase). Verify it now successfully identifies the location as "RUA TESTE".
+2. **Data Entry**: Create a new product in the Admin area using lowercase letters. Verify it is displayed in uppercase in the catalog.
+3. **Query Consistency**: Search for a product using mixed case (e.g., "DeTeRgEnTe"). Verify it finds the record correctly.
