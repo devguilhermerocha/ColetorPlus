@@ -10,14 +10,14 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.PistaLimpa.AppBarOverlay">
+        android:theme="@style/Theme.ColetorPlus.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.PistaLimpa.PopupOverlay" />
+            app:popupTheme="@style/Theme.ColetorPlus.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

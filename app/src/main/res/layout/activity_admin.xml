@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:theme="@style/Theme.PistaLimpa.AppBarOverlay"
+        android:theme="@style/Theme.ColetorPlus.AppBarOverlay"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
@@ -23,7 +23,7 @@
             android:background="?attr/colorPrimary"
             app:title="Coletor+ Admin"
             app:titleTextColor="@android:color/white"
-            app:popupTheme="@style/Theme.PistaLimpa.PopupOverlay" />
+            app:popupTheme="@style/Theme.ColetorPlus.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -37,21 +37,9 @@ public class AdminAuditFragment extends Fragment {
         binding.rvAuditoria.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvAuditoria.setAdapter(adapter);
 
-        binding.btnGerarTesteAudit.setOnClickListener(v -> gerarLogsTeste());
         binding.btnLimparAudit.setOnClickListener(v -> confirmarLimpeza());
 
         carregarLogs();
-    }
-
-    private void gerarLogsTeste() {
-        new Thread(() -> {
-            AppDatabase db = AppDatabase.getInstance(requireContext().getApplicationContext());
-            long now = System.currentTimeMillis();
-            db.auditoriaDao().inserir(new Auditoria("Admin Teste", "ENTRADA", "Lote de teste (Entrada)", now));
-            db.auditoriaDao().inserir(new Auditoria("Admin Teste", "SAÍDA", "Lote de teste (Saída)", now - 1000));
-            db.auditoriaDao().inserir(new Auditoria("Admin Teste", "AVARIA", "Lote de teste (Avaria)", now - 2000));
-            carregarLogs();
-        }).start();
     }
 
     private void confirmarLimpeza() {

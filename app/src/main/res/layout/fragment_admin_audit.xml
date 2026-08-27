@@ -23,29 +23,15 @@
         android:layout_marginBottom="8dp">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGerarTesteAudit"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="1"
-            android:text="GERAR TESTE"
-            android:textSize="13sp"
-            app:icon="@drawable/adicionar"
-            app:iconPadding="4dp"
-            app:iconSize="20dp" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLimparAudit"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_weight="1"
-            android:text="LIMPAR LOGS"
-            android:textSize="13sp"
+            android:text="LIMPAR HISTÓRICO DE LOGS"
             android:textColor="@android:color/holo_red_dark"
             app:icon="@drawable/remover"
-            app:iconPadding="4dp"
-            app:iconSize="20dp"
+            app:iconPadding="12dp"
+            app:iconSize="24dp"
             app:iconTint="@android:color/holo_red_dark" />
     </LinearLayout>
 

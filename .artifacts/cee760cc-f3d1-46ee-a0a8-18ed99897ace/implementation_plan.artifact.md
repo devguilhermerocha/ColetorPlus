@@ -1,32 +1,44 @@
-# Plan: Final Admin UI Standardization
+# Plan: Redefine Dashboard Alerts (Expiration & Zero Stock)
 
-Unify the Top Bar alignment, standardize action buttons across admin screens, and refine the "New User/Product" dialogs to match the application's "Clear" design standard.
+Refactor the "Recent Alerts" section in the Admin Dashboard to specifically track products expiring within one week and products with zero stock, prioritizing expirations.
 
 ## Proposed Changes
 
-### 1. Top Bar Alignment
+### 1. Data Models & DAOs
 
-#### [MODIFY] [activity_admin.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/activity_admin.xml)
-- Add `android:fitsSystemWindows="true"` to the root `ConstraintLayout`. This ensures the `AppBarLayout` respects the system status bar, matching the behavior and positioning of the User's `MainActivity`.
+#### [MODIFY] [ValidadeDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/ValidadeDao.java)
+- Add a new query `getValidadesVencendoComProduto(long limitDate)` using a JOIN to retrieve expiration data along with product names and EANs.
 
-### 2. Button Standardization
+#### [MODIFY] [ProdutoDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/ProdutoDao.java)
+- Add a new query `getProdutosSemEstoque()` to fetch all products where `quantidadeTotal <= 0`.
 
-#### [MODIFY] [fragment_admin_products.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_admin_products.xml)
-#### [MODIFY] [fragment_admin_users.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_admin_users.xml)
-#### [MODIFY] [fragment_admin_audit.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_admin_audit.xml)
-- Increase the height of header action buttons (NOVO, ADICIONAR, LIMPAR) to be more touch-friendly and robust.
-- Ensure `app:iconPadding` and `app:iconSize` are consistent with the "User" operations buttons.
+#### [NEW] `DashboardAlerta.java`
+- A simple model class to unify both alert types.
+- Fields: `titulo`, `subtitulo`, `tipo` (VENCIMENTO, ESTOQUE), `prioridade`.
 
-### 3. Dialog Refinement
+### 2. UI Components
 
-#### [MODIFY] [dialog_admin_novo_produto.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/dialog_admin_novo_produto.xml)
-#### [MODIFY] [dialog_admin_novo_usuario.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/dialog_admin_novo_usuario.xml)
-- Adjust internal spacing to ensure they look "Clear" and professional.
-- Match the `68dp` scanner button height for the product dialog.
+#### [NEW] `AlertaDashboardAdapter.java`
+- A dedicated adapter for the dashboard alerts.
+- **Visual Design**:
+    - Expiration alerts will be highlighted in **Orange/Red** with a clock/warning icon.
+    - Zero stock alerts will be highlighted in **Dark Gray/Red** with an empty icon.
+- Uses a simplified version of the audit item layout.
+
+### 3. Dashboard Logic
+
+#### [MODIFY] [AdminDashboardFragment.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/admin/AdminDashboardFragment.java)
+- Update `carregarDados()`:
+    1. Fetch products expiring in 7 days.
+    2. Fetch products with 0 stock.
+    3. Map both to `DashboardAlerta` objects.
+    4. Sort the list: Expiration alerts first, then Zero Stock alerts.
+    5. Update the `rvAlertasAdmin` with the new adapter.
 
 ## Verification Plan
 
 ### Manual Verification
-1. **Visual Alignment**: Navigate between User and Admin roles. Verify the Toolbar title and icons are at the same vertical level relative to the top of the screen.
-2. **Button Consistency**: Verify that buttons like "NOVO" and "ADICIONAR" have a consistent, modern feel across management screens.
-3. **Dialog Check**: Open both New Product and New User dialogs. Confirm they share the same padding, border styles, and field alignment.
+1. **Expiration Alert**: Register a product with an expiration date 3 days from now. Verify it appears at the top of the dashboard.
+2. **Zero Stock Alert**: Adjust a product's stock to 0. Verify it appears in the alerts list below expiration alerts.
+3. **Priority Test**: Have both conditions active. Ensure the expiration alert is always listed above the zero stock alert.
+4. **Empty State**: Clear all stock and dates. Verify the list handles no alerts gracefully.

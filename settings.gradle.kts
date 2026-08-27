@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PistaLimpa"
+rootProject.name = "ColetorPlus"
 include(":app")

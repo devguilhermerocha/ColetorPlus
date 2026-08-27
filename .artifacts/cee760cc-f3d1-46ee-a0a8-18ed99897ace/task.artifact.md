@@ -1,4 +1,7 @@
-- [x] Fix Top Bar alignment in `activity_admin.xml`
-- [x] Standardize action buttons in admin fragments
-- [x] Refine "New User" and "New Product" dialogs
-- [x] Verify build and consistency
+- [ ] Update `ValidadeDao.java` with JOIN query for expiring products
+- [ ] Update `ProdutoDao.java` with query for zero stock products
+- [ ] Create `DashboardAlerta.java` model
+- [ ] Create `item_dashboard_alerta.xml` layout
+- [ ] Create `AlertaDashboardAdapter.java`
+- [ ] Refactor `AdminDashboardFragment.java` to populate intelligent alerts
+- [ ] Verify build and priority sorting

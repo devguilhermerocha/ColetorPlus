@@ -30,4 +30,10 @@ public interface ProdutoDao {
 
     @androidx.room.Delete
     void deletar(Produto produto);
+
+    @Query("SELECT COUNT(*) FROM produtos WHERE quantidadeTotal <= 0")
+    int countProdutosEsgotados();
+
+    @Query("SELECT * FROM produtos WHERE quantidadeTotal <= 0 ORDER BY nome ASC")
+    List<Produto> getProdutosSemEstoque();
 }

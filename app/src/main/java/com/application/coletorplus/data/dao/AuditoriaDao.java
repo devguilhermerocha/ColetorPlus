@@ -17,6 +17,9 @@ public interface AuditoriaDao {
     @Query("SELECT * FROM auditoria ORDER BY timestamp DESC")
     List<Auditoria> listarTodas();
 
+    @Query("SELECT * FROM auditoria ORDER BY timestamp DESC LIMIT :limit")
+    List<Auditoria> listarUltimas(int limit);
+
     @Query("DELETE FROM auditoria")
     void deletarTudo();
 }

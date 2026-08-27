@@ -24,4 +24,19 @@ public interface ValidadeDao {
 
     @Delete
     void deletar(Validade validade);
+
+    @Query("SELECT COUNT(*) FROM validades WHERE dataVencimento <= :limitDate")
+    int countValidadesVencendo(long limitDate);
+
+    @Query("SELECT v.*, p.nome as produtoNome, p.codigoEan as produtoEan FROM validades v " +
+            "INNER JOIN produtos p ON v.produtoId = p.id " +
+            "WHERE v.dataVencimento <= :limitDate ORDER BY v.dataVencimento ASC")
+    List<ValidadeComProduto> getValidadesVencendoComProduto(long limitDate);
+
+    class ValidadeComProduto {
+        @androidx.room.Embedded
+        public Validade validade;
+        public String produtoNome;
+        public String produtoEan;
+    }
 }
