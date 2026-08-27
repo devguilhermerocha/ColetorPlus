@@ -8,9 +8,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -151,26 +149,25 @@ public class AdminProductManagementFragment extends Fragment {
     }
 
     private void showAddProductDialog() {
-        isScanningForDialog = true;
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Novo/Editar Produto");
-
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_admin_novo_produto, null);
+        AlertDialog dialog = builder.setView(view).create();
+
         etDialogEan = view.findViewById(R.id.etNovoEan);
         etDialogNome = view.findViewById(R.id.etNovoNome);
         etDialogQuantidade = view.findViewById(R.id.etNovoQuantidade);
         etDialogValidade = view.findViewById(R.id.etNovoValidade);
         tvDialogAviso = view.findViewById(R.id.tvAvisoExistente);
         android.widget.ImageButton btnScanDialog = view.findViewById(R.id.btnScanEanDialog);
+        com.google.android.material.button.MaterialButton btnSalvar = view.findViewById(R.id.btnSalvarDialog);
+        com.google.android.material.button.MaterialButton btnCancelar = view.findViewById(R.id.btnCancelarDialog);
 
         selectedValidadeTimestamp = 0;
 
-        // Configurar DatePicker para Validade
         if (etDialogValidade != null) {
             etDialogValidade.setOnClickListener(v -> showDatePicker());
         }
 
-        // Ação do botão de scanner ao lado do EAN no diálogo
         if (btnScanDialog != null) {
             btnScanDialog.setOnClickListener(v -> {
                 isScanningForDialog = true;
@@ -178,80 +175,72 @@ public class AdminProductManagementFragment extends Fragment {
             });
         }
 
-        // Busca automática ao digitar o EAN completo
         etDialogEan.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override public void afterTextChanged(Editable s) {
-                if (s.length() >= 8) { // EANs costumam ter 8, 13 ou 14 dígitos
+                if (s.length() >= 8) {
                     buscarProdutoParaDialogo(s.toString());
                 }
             }
         });
 
-        builder.setView(view);
+        if (btnCancelar != null) btnCancelar.setOnClickListener(v -> dialog.dismiss());
 
-        builder.setPositiveButton("Salvar", (dialog, which) -> {
-            String nome = etDialogNome.getText().toString().trim().toUpperCase();
-            String ean = etDialogEan.getText().toString().trim().toUpperCase();
-            String qtdStr = etDialogQuantidade.getText().toString().trim();
-            int quantidade = qtdStr.isEmpty() ? 0 : Integer.parseInt(qtdStr);
+        if (btnSalvar != null) {
+            btnSalvar.setOnClickListener(v -> {
+                String nome = etDialogNome.getText().toString().trim().toUpperCase();
+                String ean = etDialogEan.getText().toString().trim().toUpperCase();
+                String qtdStr = etDialogQuantidade.getText().toString().trim();
+                int quantidade = qtdStr.isEmpty() ? 0 : Integer.parseInt(qtdStr);
 
-            if (!nome.isEmpty() && !ean.isEmpty()) {
-                new Thread(() -> {
-                    Produto existente = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
-                    long produtoId;
-                    
-                    if (existente != null) {
-                        // Atualiza existente
-                        existente.setNome(nome);
-                        AppDatabase.getInstance(requireContext()).produtoDao().atualizar(existente);
-                        produtoId = existente.getId();
-                    } else {
-                        // Insere novo
-                        Produto novo = new Produto(nome, ean, 0); // Quantidade inicial será calculada abaixo
-                        produtoId = AppDatabase.getInstance(requireContext()).produtoDao().inserir(novo);
-                    }
-
-                    // Se uma validade e quantidade foram informadas, adiciona como um novo lote
-                    if (selectedValidadeTimestamp > 0 && quantidade > 0) {
-                        Validade novoLote = new Validade(produtoId, selectedValidadeTimestamp, quantidade);
-                        AppDatabase.getInstance(requireContext()).validadeDao().inserirValidade(novoLote);
+                if (!nome.isEmpty() && !ean.isEmpty()) {
+                    new Thread(() -> {
+                        AppDatabase db = AppDatabase.getInstance(requireContext());
+                        Produto existente = db.produtoDao().buscarPorEan(ean);
+                        long produtoId;
                         
-                        // Recalcula a quantidade total do produto baseada em todos os lotes (validades)
-                        int novaSomaTotal = AppDatabase.getInstance(requireContext()).validadeDao().getSomaQuantidades(produtoId);
-                        
-                        // Busca o produto atualizado para garantir que temos o objeto correto para update
-                        Produto pParaUpdate = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
-                        if (pParaUpdate != null) {
-                            pParaUpdate.setQuantidadeTotal(novaSomaTotal);
-                            AppDatabase.getInstance(requireContext()).produtoDao().atualizar(pParaUpdate);
+                        if (existente != null) {
+                            existente.setNome(nome);
+                            AppDatabase.getInstance(requireContext()).produtoDao().atualizar(existente);
+                            produtoId = existente.getId();
+                        } else {
+                            Produto novo = new Produto(nome, ean, 0);
+                            produtoId = AppDatabase.getInstance(requireContext()).produtoDao().inserir(novo);
                         }
-                    } else if (existente == null && quantidade > 0) {
-                        // Caso especial: Novo produto sem validade mas com quantidade (adiciona validade genérica ou apenas seta)
-                        // Para este fluxo, vamos forçar que quantidade venha com validade ou tratar apenas a soma.
-                        // Se não tem validade, a quantidade total pode ser setada diretamente se for novo.
-                        Produto pParaUpdate = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
-                        if (pParaUpdate != null) {
-                            pParaUpdate.setQuantidadeTotal(quantidade);
-                            AppDatabase.getInstance(requireContext()).produtoDao().atualizar(pParaUpdate);
-                        }
-                    }
-                    
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), "Dados salvos com sucesso!", Toast.LENGTH_SHORT).show();
-                            carregarProdutos();
-                        });
-                    }
-                }).start();
-            } else {
-                Toast.makeText(getContext(), "Preencha Nome e EAN", Toast.LENGTH_SHORT).show();
-            }
-        });
 
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
-        builder.show();
+                        if (selectedValidadeTimestamp > 0 && quantidade > 0) {
+                            Validade novoLote = new Validade(produtoId, selectedValidadeTimestamp, quantidade);
+                            AppDatabase.getInstance(requireContext()).validadeDao().inserirValidade(novoLote);
+                            int novaSomaTotal = AppDatabase.getInstance(requireContext()).validadeDao().getSomaQuantidades(produtoId);
+                            Produto pParaUpdate = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
+                            if (pParaUpdate != null) {
+                                pParaUpdate.setQuantidadeTotal(novaSomaTotal);
+                                AppDatabase.getInstance(requireContext()).produtoDao().atualizar(pParaUpdate);
+                            }
+                        } else if (existente == null && quantidade > 0) {
+                            Produto pParaUpdate = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
+                            if (pParaUpdate != null) {
+                                pParaUpdate.setQuantidadeTotal(quantidade);
+                                AppDatabase.getInstance(requireContext()).produtoDao().atualizar(pParaUpdate);
+                            }
+                        }
+                        
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), "Dados salvos com sucesso!", Toast.LENGTH_SHORT).show();
+                                carregarProdutos();
+                                dialog.dismiss();
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(getContext(), "Preencha Nome e EAN", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        dialog.show();
     }
 
     private void showDatePicker() {
@@ -266,7 +255,9 @@ public class AdminProductManagementFragment extends Fragment {
                     Calendar selected = Calendar.getInstance();
                     selected.set(year, month, dayOfMonth);
                     selectedValidadeTimestamp = selected.getTimeInMillis();
-                    etDialogValidade.setText(dateFormat.format(selected.getTime()));
+                    if (etDialogValidade != null) {
+                        etDialogValidade.setText(dateFormat.format(selected.getTime()));
+                    }
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -279,7 +270,6 @@ public class AdminProductManagementFragment extends Fragment {
         new Thread(() -> {
             Produto p = AppDatabase.getInstance(requireContext()).produtoDao().buscarPorEan(ean);
             if (p != null && getActivity() != null) {
-                // Buscar validade vinculada
                 List<Validade> validades = AppDatabase.getInstance(requireContext()).validadeDao().buscarPorProduto(p.getId());
                 
                 getActivity().runOnUiThread(() -> {
@@ -288,17 +278,21 @@ public class AdminProductManagementFragment extends Fragment {
                     tvDialogAviso.setVisibility(View.VISIBLE);
                     
                     if (!validades.isEmpty()) {
-                        Validade v = validades.get(validades.size() - 1); // Pega a última cadastrada
+                        Validade v = validades.get(validades.size() - 1);
                         selectedValidadeTimestamp = v.getDataVencimento();
-                        etDialogValidade.setText(dateFormat.format(v.getDataVencimento()));
+                        if (etDialogValidade != null) {
+                            etDialogValidade.setText(dateFormat.format(v.getDataVencimento()));
+                        }
                     } else {
                         selectedValidadeTimestamp = 0;
-                        etDialogValidade.setText("");
+                        if (etDialogValidade != null) {
+                            etDialogValidade.setText("");
+                        }
                     }
                 });
             } else if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
-                    tvDialogAviso.setVisibility(View.GONE);
+                    if (tvDialogAviso != null) tvDialogAviso.setVisibility(View.GONE);
                 });
             }
         }).start();
@@ -312,14 +306,11 @@ public class AdminProductManagementFragment extends Fragment {
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (p != null) {
-                        // Produto existe, filtra na lista
                         binding.etSearchInventory.setText(eanUpper);
                         buscarProdutos(eanUpper);
                     } else {
-                        // Produto não existe, abre cadastro
                         Toast.makeText(getContext(), "Produto não cadastrado. Abrindo novo cadastro...", Toast.LENGTH_SHORT).show();
                         showAddProductDialog();
-                        // Preenche o EAN no diálogo recém aberto
                         if (etDialogEan != null) {
                             etDialogEan.setText(eanUpper);
                         }
@@ -358,11 +349,8 @@ public class AdminProductManagementFragment extends Fragment {
             Produto p = produtos.get(position);
             holder.binding.tvNomeProduto.setText(p.getNome());
             holder.binding.tvEanProduto.setText("EAN: " + p.getCodigoEan());
-            
             holder.binding.tvQuantidadeProduto.setText("Qtd: " + p.getQuantidadeTotal());
             
-            // Usamos o clique longo ou um botão para deletar
-            // Como item_produto parece não ter botão de remover, vamos adicionar suporte a clique no item ou adaptar
             holder.itemView.setOnLongClickListener(v -> {
                 if (deleteListener != null) {
                     deleteListener.onDelete(p);

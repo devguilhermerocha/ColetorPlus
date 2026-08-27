@@ -1,7 +1,7 @@
-- [ ] Update `ValidadeDao.java` with JOIN query for expiring products
-- [ ] Update `ProdutoDao.java` with query for zero stock products
-- [ ] Create `DashboardAlerta.java` model
-- [ ] Create `item_dashboard_alerta.xml` layout
-- [ ] Create `AlertaDashboardAdapter.java`
-- [ ] Refactor `AdminDashboardFragment.java` to populate intelligent alerts
-- [ ] Verify build and priority sorting
+- [ ] Fix Admin Status Bar appearance in `activity_admin.xml`
+- [ ] Refactor `dialog_admin_novo_produto.xml` (Add Blue Top Bar and internal Buttons)
+- [ ] Refactor `dialog_admin_novo_usuario.xml` (Add Blue Top Bar and internal Buttons)
+- [ ] Update `AdminProductManagementFragment.java` logic for custom dialog buttons
+- [ ] Update `AdminUserManagementFragment.java` logic for custom dialog buttons
+- [ ] Improve "Limpar Logs" button in `fragment_admin_audit.xml`
+- [ ] Verify build and consistency

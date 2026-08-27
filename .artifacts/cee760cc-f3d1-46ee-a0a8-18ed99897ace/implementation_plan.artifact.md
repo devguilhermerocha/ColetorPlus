@@ -1,44 +1,43 @@
-# Plan: Redefine Dashboard Alerts (Expiration & Zero Stock)
+# Plan: UI Polishing and Dialog Standardization
 
-Refactor the "Recent Alerts" section in the Admin Dashboard to specifically track products expiring within one week and products with zero stock, prioritizing expirations.
+Refine the application's visual polish by fixing the Admin status bar color, standardizing dialog headers and buttons, and improving the audit cleanup action.
 
 ## Proposed Changes
 
-### 1. Data Models & DAOs
+### 1. Admin Status Bar Color
 
-#### [MODIFY] [ValidadeDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/ValidadeDao.java)
-- Add a new query `getValidadesVencendoComProduto(long limitDate)` using a JOIN to retrieve expiration data along with product names and EANs.
+#### [MODIFY] [activity_admin.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/activity_admin.xml)
+- Ensure the `AppBarLayout` has `android:background="?attr/colorPrimary"`.
+- Verify if `android:fitsSystemWindows="true"` is correctly applied to the root container to allow the status bar to inherit the theme's primary color.
 
-#### [MODIFY] [ProdutoDao.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/data/dao/ProdutoDao.java)
-- Add a new query `getProdutosSemEstoque()` to fetch all products where `quantidadeTotal <= 0`.
+### 2. Standardized "Clear" Dialogs (Top Bar & Buttons)
 
-#### [NEW] `DashboardAlerta.java`
-- A simple model class to unify both alert types.
-- Fields: `titulo`, `subtitulo`, `tipo` (VENCIMENTO, ESTOQUE), `prioridade`.
+#### [MODIFY] [dialog_admin_novo_produto.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/dialog_admin_novo_produto.xml)
+#### [MODIFY] [dialog_admin_novo_usuario.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/dialog_admin_novo_usuario.xml)
+- **Top Bar**: Add a blue header (`@color/purple_500`) with white title text inside the dialog layout.
+- **Buttons**:
+    - Remove reliance on `AlertDialog`'s default buttons.
+    - Add a horizontal `LinearLayout` at the bottom of the XML with two `MaterialButton` components: "CANCELAR" (Outlined) and "SALVAR" (Contained, Blue background, White text).
+- **Padding**: Set root padding to `0dp` and apply padding only to the content area (middle part) to allow the top bar to touch the edges.
 
-### 2. UI Components
+### 3. Logic Refactoring
 
-#### [NEW] `AlertaDashboardAdapter.java`
-- A dedicated adapter for the dashboard alerts.
-- **Visual Design**:
-    - Expiration alerts will be highlighted in **Orange/Red** with a clock/warning icon.
-    - Zero stock alerts will be highlighted in **Dark Gray/Red** with an empty icon.
-- Uses a simplified version of the audit item layout.
+#### [MODIFY] [AdminProductManagementFragment.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/admin/AdminProductManagementFragment.java)
+#### [MODIFY] [AdminUserManagementFragment.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/admin/AdminUserManagementFragment.java)
+- Update `showAdd...Dialog` methods:
+    - Inflate the view.
+    - Create the `AlertDialog` without title or buttons (since they are now in the XML).
+    - Find the internal "SALVAR" and "CANCELAR" buttons.
+    - Wire the logic to these internal buttons and dismiss the dialog manually.
 
-### 3. Dashboard Logic
+### 4. Audit Button Visuals
 
-#### [MODIFY] [AdminDashboardFragment.java](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/java/com/application/coletorplus/ui/admin/AdminDashboardFragment.java)
-- Update `carregarDados()`:
-    1. Fetch products expiring in 7 days.
-    2. Fetch products with 0 stock.
-    3. Map both to `DashboardAlerta` objects.
-    4. Sort the list: Expiration alerts first, then Zero Stock alerts.
-    5. Update the `rvAlertasAdmin` with the new adapter.
+#### [MODIFY] [fragment_admin_audit.xml](file:///C:/Users/Guilherme59234906/Desktop/PistaLimpa/app/src/main/res/layout/fragment_admin_audit.xml)
+- Change `btnLimparAudit` to a contained `MaterialButton` with `@android:color/holo_red_dark` background for a clearer destructive action visual.
 
 ## Verification Plan
 
 ### Manual Verification
-1. **Expiration Alert**: Register a product with an expiration date 3 days from now. Verify it appears at the top of the dashboard.
-2. **Zero Stock Alert**: Adjust a product's stock to 0. Verify it appears in the alerts list below expiration alerts.
-3. **Priority Test**: Have both conditions active. Ensure the expiration alert is always listed above the zero stock alert.
-4. **Empty State**: Clear all stock and dates. Verify the list handles no alerts gracefully.
+1. **Status Bar**: Open the Admin area. Verify the top status bar (battery/clock) is blue.
+2. **Dialogs**: Open "New Product" and "New User". Verify they have a blue title bar and blue primary buttons.
+3. **Audit**: Verify the "Limpar Histórico" button is now more prominent (solid red).

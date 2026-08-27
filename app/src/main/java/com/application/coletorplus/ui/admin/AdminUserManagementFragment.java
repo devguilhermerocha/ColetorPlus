@@ -39,15 +39,11 @@ public class AdminUserManagementFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Inicializa o RecyclerView
         binding.rvUserManagement.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new UsuarioAdapter(this::confirmarRemocao);
         binding.rvUserManagement.setAdapter(adapter);
 
-        // Configuração do clique do botão para adicionar novo usuário
-        binding.btnNovoUsuario.setOnClickListener(v -> {
-            showAddUserDialog();
-        });
+        binding.btnNovoUsuario.setOnClickListener(v -> showAddUserDialog());
 
         carregarUsuarios();
     }
@@ -89,39 +85,43 @@ public class AdminUserManagementFragment extends Fragment {
 
     private void showAddUserDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Novo Usuário");
-
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_admin_novo_usuario, null);
+        AlertDialog dialog = builder.setView(view).create();
+
         final EditText inputNome = view.findViewById(R.id.etNovoUsuarioNome);
         final EditText inputLogin = view.findViewById(R.id.etNovoUsuarioMatricula);
         final EditText inputPassword = view.findViewById(R.id.etNovoUsuarioSenha);
+        com.google.android.material.button.MaterialButton btnSalvar = view.findViewById(R.id.btnSalvarUsuario);
+        com.google.android.material.button.MaterialButton btnCancelar = view.findViewById(R.id.btnCancelarUsuario);
 
-        builder.setView(view);
+        if (btnCancelar != null) btnCancelar.setOnClickListener(v -> dialog.dismiss());
 
-        builder.setPositiveButton("Salvar", (dialog, which) -> {
-            String nome = inputNome.getText().toString().trim().toUpperCase();
-            String login = inputLogin.getText().toString().trim().toUpperCase();
-            String senha = inputPassword.getText().toString().trim();
+        if (btnSalvar != null) {
+            btnSalvar.setOnClickListener(v -> {
+                String nome = inputNome.getText().toString().trim().toUpperCase();
+                String login = inputLogin.getText().toString().trim().toUpperCase();
+                String senha = inputPassword.getText().toString().trim();
 
-            if (!nome.isEmpty() && !login.isEmpty() && !senha.isEmpty()) {
-                new Thread(() -> {
-                    Usuario novoUsuario = new Usuario(nome, login, senha, "OPERADOR");
-                    AppDatabase.getInstance(requireContext()).usuarioDao().inserir(novoUsuario);
-                    
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), "Usuário cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-                            carregarUsuarios(); // Atualiza a lista
-                        });
-                    }
-                }).start();
-            } else {
-                Toast.makeText(getContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
-            }
-        });
+                if (!nome.isEmpty() && !login.isEmpty() && !senha.isEmpty()) {
+                    new Thread(() -> {
+                        Usuario novoUsuario = new Usuario(nome, login, senha, "OPERADOR");
+                        AppDatabase.getInstance(requireContext()).usuarioDao().inserir(novoUsuario);
+                        
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), "Usuário cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                                carregarUsuarios();
+                                dialog.dismiss();
+                            });
+                        }
+                    }).start();
+                } else {
+                    Toast.makeText(getContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
-        builder.show();
+        dialog.show();
     }
 
     private static class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHolder> {
@@ -155,11 +155,10 @@ public class AdminUserManagementFragment extends Fragment {
             holder.binding.tvItemMatricula.setText("Matrícula: " + u.getMatricula());
             holder.binding.tvItemPerfil.setText(u.getPerfil());
             
-            // Estilização simples do perfil
             if ("MASTER".equals(u.getPerfil())) {
-                holder.binding.tvItemPerfil.setBackgroundColor(0xFF4CAF50); // Verde
+                holder.binding.tvItemPerfil.setBackgroundColor(0xFF4CAF50);
             } else {
-                holder.binding.tvItemPerfil.setBackgroundColor(0xFF2196F3); // Azul
+                holder.binding.tvItemPerfil.setBackgroundColor(0xFF2196F3);
             }
 
             holder.binding.btnRemoverUsuario.setOnClickListener(v -> {

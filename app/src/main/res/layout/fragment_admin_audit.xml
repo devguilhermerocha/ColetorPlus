@@ -24,15 +24,15 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLimparAudit"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="64dp"
             android:text="LIMPAR HISTÓRICO DE LOGS"
-            android:textColor="@android:color/holo_red_dark"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@android:color/holo_red_dark"
             app:icon="@drawable/remover"
             app:iconPadding="12dp"
-            app:iconSize="24dp"
-            app:iconTint="@android:color/holo_red_dark" />
+            app:iconSize="28dp"
+            app:iconTint="@android:color/white" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
