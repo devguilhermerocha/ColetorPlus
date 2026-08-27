@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:padding="16dp">
+    android:padding="8dp">
 
     <!-- Card de Pesquisa -->
     <com.google.android.material.card.MaterialCardView
@@ -31,7 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Buscar por Nome, EAN ou Endereço">
+                android:hint="Buscar Produto">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etBuscaGenerica"

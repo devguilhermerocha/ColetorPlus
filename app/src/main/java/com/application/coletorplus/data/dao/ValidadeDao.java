@@ -16,12 +16,6 @@ public interface ValidadeDao {
     @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
     long inserirValidade(Validade validade);
 
-    @Insert
-    void vincularProdutoValidade(ProdutoValidade ref);
-
-    @Query("SELECT * FROM validades ORDER BY dataVencimento ASC")
-    List<Validade> listarPorVencimento();
-
     @Query("SELECT * FROM validades WHERE produtoId = :produtoId ORDER BY dataVencimento ASC")
     List<Validade> buscarPorProduto(long produtoId);
 

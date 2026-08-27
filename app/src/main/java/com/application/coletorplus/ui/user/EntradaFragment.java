@@ -16,9 +16,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.application.coletorplus.data.database.AppDatabase;
+import com.application.coletorplus.data.model.Auditoria;
 import com.application.coletorplus.data.model.Endereco;
 import com.application.coletorplus.data.model.Produto;
 import com.application.coletorplus.data.model.ProdutoEndereco;
+import com.application.coletorplus.data.session.SessionManager;
 import com.application.coletorplus.databinding.FragmentEntradaBinding;
 import com.application.coletorplus.ui.adapter.EntradaBatchAdapter;
 import com.application.coletorplus.ui.scanner.ScannerHelper;
@@ -152,7 +154,6 @@ public class EntradaFragment extends Fragment {
         binding.cardInfoRuaIdentificada.setVisibility(View.VISIBLE);
         binding.tvRuaIdentificada.setText(String.format("Local: %s", e.getDescricao()));
         binding.etCodigoRua.setText("");
-        Toast.makeText(getContext(), "Rua vinculada!", Toast.LENGTH_SHORT).show();
     }
 
     private void solicitarCriacaoDeEndereco(String codigo) {
@@ -233,6 +234,12 @@ public class EntradaFragment extends Fragment {
             for (Produto p : produtos) {
                 db.enderecoDao().vincularProdutoEndereco(new ProdutoEndereco(p.getId(), enderecoSelecionado.getId()));
             }
+
+            // REGISTRO DE AUDITORIA
+            String nomeUsuario = SessionManager.getInstance().getUsuarioLogado() != null 
+                    ? SessionManager.getInstance().getUsuarioLogado().getNome() : "Desconhecido";
+            String logDesc = String.format("%d produtos endereçados em %s", produtos.size(), enderecoSelecionado.getDescricao());
+            db.auditoriaDao().inserir(new Auditoria(nomeUsuario, "ENTRADA", logDesc, System.currentTimeMillis()));
 
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {

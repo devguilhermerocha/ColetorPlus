@@ -1,5 +1,4 @@
-- [ ] Update `EnderecoDao.java` with bulk desendereçar method
-- [ ] Refactor `fragment_saida.xml` (Search bar, street info card, RecyclerView)
-- [ ] Create `SaidaBatchAdapter.java` for product removal list
-- [ ] Update `SaidaFragment.java` with identification and removal logic
-- [ ] Verify build and functionality
+- [x] Fix Top Bar alignment in `activity_admin.xml`
+- [x] Standardize action buttons in admin fragments
+- [x] Refine "New User" and "New Product" dialogs
+- [x] Verify build and consistency

@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:padding="16dp">
+        android:padding="8dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="EAN do Produto">
+                        android:hint="Codígo Produto">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCodigoProdutoEntrada"
@@ -142,7 +142,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Nome ou QR Code da Rua">
+                    android:hint="Localizar Rua">
 
                     <AutoCompleteTextView
                         android:id="@+id/etCodigoRua"

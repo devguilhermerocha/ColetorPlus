@@ -68,8 +68,6 @@ public class ConsultaProdutoFragment extends Fragment {
                     String codigoLido = result.getContents().trim().toUpperCase();
                     binding.etBuscaGenerica.setText(codigoLido);
                     realizarConsulta(codigoLido);
-                } else {
-                    Toast.makeText(requireContext(), "Leitura cancelada", Toast.LENGTH_SHORT).show();
                 }
             }
     );
@@ -79,12 +77,6 @@ public class ConsultaProdutoFragment extends Fragment {
 
         String busca = termo.trim().toUpperCase();
         Context context = getContext().getApplicationContext();
-        
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> {
-                Toast.makeText(context, "Buscando: " + busca, Toast.LENGTH_SHORT).show();
-            });
-        }
         
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(context);

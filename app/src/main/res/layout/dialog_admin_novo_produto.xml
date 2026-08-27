@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:padding="24dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -14,35 +16,51 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <!-- EAN com Scanner ao lado -->
+    <!-- EAN com Scanner Padronizado (Clear + Shadowed) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:layout_marginBottom="16dp">
 
-        <EditText
-            android:id="@+id/etNovoEan"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNovoEan"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:drawable/editbox_background"
-            android:hint="Código EAN"
-            android:inputType="number"
-            android:padding="8dp" />
+            android:hint="Código EAN">
 
-        <ImageButton
-            android:id="@+id/btnScanEanDialog"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Escanear EAN"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/qrcode"
-            app:tint="?attr/colorPrimary" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNovoEan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardScanEanDialog"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:layout_marginStart="12dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
+
+            <ImageButton
+                android:id="@+id/btnScanEanDialog"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="Escanear EAN"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/qrcode"
+                app:tint="?attr/colorPrimary" />
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout

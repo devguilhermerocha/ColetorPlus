@@ -38,11 +38,9 @@ public class AdminInventoryFragment extends Fragment {
             new ScanContract(),
             result -> {
                 if (result.getContents() != null) {
-                    String codigoLido = result.getContents().trim();
+                    String codigoLido = result.getContents().trim().toUpperCase();
                     binding.etSearchInventory.setText(codigoLido);
                     buscarRua();
-                } else {
-                    Toast.makeText(requireContext(), "Leitura cancelada", Toast.LENGTH_SHORT).show();
                 }
             }
     );

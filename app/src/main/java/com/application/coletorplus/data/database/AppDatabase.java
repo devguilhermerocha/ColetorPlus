@@ -8,10 +8,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.application.coletorplus.data.dao.AuditoriaDao;
 import com.application.coletorplus.data.dao.EnderecoDao;
 import com.application.coletorplus.data.dao.ProdutoDao;
 import com.application.coletorplus.data.dao.UsuarioDao;
 import com.application.coletorplus.data.dao.ValidadeDao;
+import com.application.coletorplus.data.model.Auditoria;
 import com.application.coletorplus.data.model.Endereco;
 import com.application.coletorplus.data.model.Produto;
 import com.application.coletorplus.data.model.ProdutoEndereco;
@@ -27,8 +29,9 @@ import java.util.concurrent.Executors;
         Endereco.class,
         Validade.class,
         ProdutoEndereco.class,
-        ProdutoValidade.class
-}, version = 2, exportSchema = false)
+        ProdutoValidade.class,
+        Auditoria.class
+}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase INSTANCE;
@@ -37,6 +40,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
     public abstract EnderecoDao enderecoDao();
     public abstract ValidadeDao validadeDao();
+    public abstract AuditoriaDao auditoriaDao();
 
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {

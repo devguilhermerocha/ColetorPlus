@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.application.coletorplus.R;
 import com.application.coletorplus.data.database.AppDatabase;
 import com.application.coletorplus.data.model.Usuario;
 import com.application.coletorplus.databinding.FragmentAdminUsersBinding;
@@ -91,28 +91,16 @@ public class AdminUserManagementFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Novo Usuário");
 
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50, 40, 50, 10);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_admin_novo_usuario, null);
+        final EditText inputNome = view.findViewById(R.id.etNovoUsuarioNome);
+        final EditText inputLogin = view.findViewById(R.id.etNovoUsuarioMatricula);
+        final EditText inputPassword = view.findViewById(R.id.etNovoUsuarioSenha);
 
-        final EditText inputNome = new EditText(getContext());
-        inputNome.setHint("Nome Completo");
-        layout.addView(inputNome);
-
-        final EditText inputLogin = new EditText(getContext());
-        inputLogin.setHint("Matrícula / Login");
-        layout.addView(inputLogin);
-
-        final EditText inputPassword = new EditText(getContext());
-        inputPassword.setHint("Senha");
-        inputPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        layout.addView(inputPassword);
-
-        builder.setView(layout);
+        builder.setView(view);
 
         builder.setPositiveButton("Salvar", (dialog, which) -> {
-            String nome = inputNome.getText().toString().trim();
-            String login = inputLogin.getText().toString().trim();
+            String nome = inputNome.getText().toString().trim().toUpperCase();
+            String login = inputLogin.getText().toString().trim().toUpperCase();
             String senha = inputPassword.getText().toString().trim();
 
             if (!nome.isEmpty() && !login.isEmpty() && !senha.isEmpty()) {

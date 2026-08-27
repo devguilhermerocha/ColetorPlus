@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         if (navigationView != null) {
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_estoque, R.id.nav_entrada, R.id.nav_saida, R.id.nav_ajuste, R.id.nav_settings)
+                    R.id.nav_estoque, R.id.nav_entrada, R.id.nav_saida, R.id.nav_ajuste)
                     .setOpenableLayout(binding.drawerLayout)
                     .build();
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = binding.appBarMain.contentMain.bottomNavView;
         if (bottomNavigationView != null) {
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_estoque, R.id.nav_entrada, R.id.nav_saida, R.id.nav_ajuste, R.id.nav_settings)
+                    R.id.nav_estoque, R.id.nav_entrada, R.id.nav_saida, R.id.nav_ajuste)
                     .build();
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
@@ -75,24 +75,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        boolean result = super.onCreateOptionsMenu(menu);
-        NavigationView navView = findViewById(R.id.nav_view);
-
-        // Se o menu lateral não estiver visível, infla o menu de três pontos
-        if (navView == null) {
-            getMenuInflater().inflate(R.menu.overflow, menu);
-        }
-        return result;
+        getMenuInflater().inflate(R.menu.overflow, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.nav_settings) {
-            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.nav_settings);
+        if (item.getItemId() == R.id.action_logout) {
+            logout();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        startActivity(new android.content.Intent(this, LoginActivity.class));
+        finish();
     }
 
     @Override

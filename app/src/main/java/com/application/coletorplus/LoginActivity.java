@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.application.coletorplus.data.database.AppDatabase;
 import com.application.coletorplus.data.model.Usuario;
+import com.application.coletorplus.data.session.SessionManager;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
@@ -52,6 +53,9 @@ public class LoginActivity extends AppCompatActivity {
 
             runOnUiThread(() -> {
                 if (usuarioAutenticado != null) {
+                    // Salva o usuário na sessão global
+                    SessionManager.getInstance().setUsuarioLogado(usuarioAutenticado);
+                    
                     Toast.makeText(this, "Bem-vindo, " + usuarioAutenticado.getNome(), Toast.LENGTH_SHORT).show();
 
                     Intent intent;

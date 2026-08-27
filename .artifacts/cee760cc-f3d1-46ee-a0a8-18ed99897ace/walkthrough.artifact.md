@@ -1,27 +1,30 @@
-# Walkthrough - Uppercase Data Standardization (UPPER)
+# Walkthrough - Admin UI Refinement and Standardization
 
-I have implemented a comprehensive standardization to ensure that all critical application data (Product Names, EANs, and Address Descriptions) are handled exclusively in **UPPERCASE**. This eliminates search failures caused by case sensitivity issues, such as the one encountered with "Rua Teste".
+I have completed the final refinements to the Administrative user interface, ensuring that all elements are perfectly aligned and follow the consistent "Clear" design standard.
 
 ## Changes Made
 
-### Model-Level Enforcement
-- **`Produto.java`**: Updated the constructor and setters (`setNome`, `setCodigoEan`) to automatically convert incoming strings to uppercase.
-- **`Endereco.java`**: Standardized the street description to always be stored in uppercase through its constructor and `setDescricao` method.
+### 📏 Top Bar & Layout Alignment
+- **`activity_admin.xml`**: Added `android:fitsSystemWindows="true"` to the root layout. This aligns the Admin Top Bar exactly with the User screen's bar by correctly accounting for the system status bar area.
+- **Global Rendering**: Applied `clipChildren="false"` and `clipToPadding="false"` to the administrative dialogs and fragments to ensure shadows from elevated components are rendered without clipping.
 
-### UI Input & Search Standardization
-I have updated all relevant fragments to ensure that any input from the keyboard or barcode scanner is trimmed and converted to uppercase before it is used for database queries:
-- **`EntradaFragment.java`**: Standardized both product EANs and street codes.
-- **`ConsultaProdutoFragment.java`**: Standardized the general search term.
-- **`AjusteFragment.java`**: Standardized product lookup by EAN.
-- **`AdminProductManagementFragment.java`**: Ensured new or edited products are saved with uppercase names and EANs.
-- **`AdminInventoryFragment.java`**: Standardized street searches and creation.
+### 🔘 Button Standardization
+Standardized all primary action buttons (NOVO, ADICIONAR, LIMPAR) in the management screens:
+- **Consistent Height**: Increased height to `56dp` for a more robust, touch-friendly feel.
+- **Unified Style**: Balanced font size (`15sp`) and icon dimensions (`24dp` icon with `8dp` padding) to match the operational buttons in the user area.
+
+### 📑 Dialog Refinement
+Refined both the **New User** and **New Product** dialogs for a cohesive "Clear" look:
+- **Uniform Padding**: Standardized root padding at `24dp`.
+- **Shadow Support**: Enabled clipping properties to allow the rounded shadowed effects to shine.
+- **Consistency**: Verified that all input fields follow the same Outlined style and spacing.
 
 ## Verification Results
 
 ### Automated Tests
-- [x] **Gradle Build**: Successfully compiled the project. All Room entity logic and fragment bindings are verified.
+- [x] **Gradle Build**: The project builds successfully. All layout changes and component ID references are verified.
 
 ### Manual Verification Recommended
-1. **The "Rua Teste" Fix**: Go to the **Entrada** screen and type "rua teste" (all lowercase). Verify it now successfully identifies the location as "RUA TESTE".
-2. **Data Entry**: Create a new product in the Admin area using lowercase letters. Verify it is displayed in uppercase in the catalog.
-3. **Query Consistency**: Search for a product using mixed case (e.g., "DeTeRgEnTe"). Verify it finds the record correctly.
+1. **Switch Roles**: Log in as User, then as Admin. Verify the Top Bar does not "jump" or change position.
+2. **Button Check**: Navigate through Products, Users, and Audit. Confirm that all "NOVO/ADICIONAR" buttons feel consistent.
+3. **Dialog Check**: Open the "Novo Usuário" dialog. Confirm it looks just as modern and clean as the product dialog.

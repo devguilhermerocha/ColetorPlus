@@ -27,10 +27,6 @@ public interface EnderecoDao {
     @Query("SELECT * FROM enderecos WHERE UPPER(descricao) = UPPER(:nomeRua) LIMIT 1")
     Endereco buscarRuaExata(String nomeRua);
 
-    // Busca ruas por aproximação
-    @Query("SELECT * FROM enderecos WHERE descricao LIKE '%' || :termo || '%' ORDER BY descricao ASC")
-    List<Endereco> buscarRuasPorTermo(String termo);
-
     // Ajustado para consultar a tabela produto_endereco_ref
     @Query("DELETE FROM produto_endereco_ref WHERE produtoId = :produtoId AND enderecoId = :enderecoId")
     int desenderecarProduto(long produtoId, int enderecoId);
@@ -45,6 +41,6 @@ public interface EnderecoDao {
             "WHERE pe.produtoId = :produtoId")
     List<Endereco> buscarEnderecosPorProduto(long produtoId);
 
-    @Delete
-    void deletarEndereco(Endereco endereco);
+    @Query("DELETE FROM produto_endereco_ref WHERE enderecoId = :enderecoId")
+    void desenderecarTodosProdutos(int enderecoId);
 }

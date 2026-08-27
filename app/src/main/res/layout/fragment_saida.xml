@@ -1,107 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fillViewport="true"
     android:clipChildren="false"
-    android:clipToPadding="false"
-    android:padding="16dp">
+    android:clipToPadding="false">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Saída / Desendereçar"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Card de Ação Rápida -->
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        android:orientation="vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:padding="8dp">
 
-        <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Saída / Desendereçar"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Passo 1: Identificar Local -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:clipChildren="false"
-            android:clipToPadding="false">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ação Rápida de Retirada"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="12dp"
                 android:clipChildren="false"
-                android:clipToPadding="false"
-                android:layout_marginBottom="16dp">
+                android:clipToPadding="false">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilCodigoSaida"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Ler EAN do Produto ou Local">
+                    android:text="Identificar Local de Retirada"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etCodigoSaida"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCodigoSaida"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Localizar Rua">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/etCodigoSaida"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:completionThreshold="1"
+                            android:imeOptions="actionSearch"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardScannerSaida"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_marginStart="12dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true">
+
+                        <ImageButton
+                            android:id="@+id/btnScannerSaida"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/qrcode"
+                            app:tint="?attr/colorPrimary"
+                            android:background="?attr/selectableItemBackground"
+                            android:contentDescription="Escanear Saída" />
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <!-- Info da Rua (Oculto inicialmente) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardInfoRuaSaida"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="#F5F5F5"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardScannerSaida"
-                    android:layout_width="68dp"
-                    android:layout_height="68dp"
-                    android:layout_marginStart="12dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp"
-                    app:cardUseCompatPadding="true">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/qrcode"
+                            app:tint="?attr/colorPrimary"
+                            android:contentDescription="QR Code" />
 
-                    <ImageButton
-                        android:id="@+id/btnScannerSaida"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="2dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/qrcode"
-                        app:tint="?attr/colorPrimary"
-                        android:background="?attr/selectableItemBackground"
-                        android:contentDescription="Escanear Saída" />
+                        <TextView
+                            android:id="@+id/tvRuaIdentificadaSaida"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Rua: Não identificada"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black" />
+                    </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLimparLocalCompleto"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="LIMPAR VAGA!"
+                    android:textColor="@android:color/holo_red_dark"
+                    app:icon="@drawable/remover"
+                    app:iconGravity="textStart"
+                    app:iconPadding="12dp"
+                    app:iconSize="28dp"
+                    app:strokeColor="@android:color/holo_red_dark" />
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnConfirmarSaida"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:text="Confirmar Retirada"
-                app:icon="@drawable/saida"
-                app:iconGravity="textStart"
-                app:iconPadding="12dp"
-                app:iconSize="28dp"
-                app:backgroundTint="@android:color/holo_blue_dark" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        <!-- Lista de Produtos no Local -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Produtos vinculados a este local:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSaidaItens"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSaidaItens"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="16dp" />
 
-</LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

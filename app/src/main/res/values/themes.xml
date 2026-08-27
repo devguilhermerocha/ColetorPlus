@@ -14,12 +14,14 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.PistaLimpa.NoActionBar">
+    <style name="Theme.PistaLimpa.NoActionBar" parent="Theme.PistaLimpa">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.PistaLimpa.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.PistaLimpa.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
 
     <style name="Theme.PistaLimpa.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

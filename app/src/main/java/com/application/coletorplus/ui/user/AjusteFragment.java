@@ -20,8 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.application.coletorplus.data.database.AppDatabase;
+import com.application.coletorplus.data.model.Auditoria;
 import com.application.coletorplus.data.model.Produto;
 import com.application.coletorplus.data.model.Validade;
+import com.application.coletorplus.data.session.SessionManager;
 import com.application.coletorplus.databinding.FragmentAjusteBinding;
 import com.application.coletorplus.ui.scanner.ScannerHelper;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -102,7 +104,6 @@ public class AjusteFragment extends Fragment {
                 case MotionEvent.ACTION_DOWN:
                     isHoldCompleted = false;
                     handlerHold.postDelayed(runnableHold, 3000);
-                    Toast.makeText(getContext(), "Mantenha pressionado para dar baixa...", Toast.LENGTH_SHORT).show();
                     v.setPressed(true);
                     return true;
 
@@ -116,8 +117,6 @@ public class AjusteFragment extends Fragment {
                         if (!isHoldCompleted) {
                             if (selectedValidadeTimestamp == 0) {
                                 Toast.makeText(getContext(), "Selecione o lote primeiro!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getContext(), "Segure por 3 segundos para confirmar!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -234,6 +233,12 @@ public class AjusteFragment extends Fragment {
             }
 
             atualizarEstoqueTotalERefrescarUI(db);
+
+            // REGISTRO DE AUDITORIA
+            String nomeUsuario = SessionManager.getInstance().getUsuarioLogado() != null 
+                    ? SessionManager.getInstance().getUsuarioLogado().getNome() : "Desconhecido";
+            String logDesc = "Baixa de " + qtdARemover + " unid. do produto " + produtoAtual.getNome();
+            db.auditoriaDao().inserir(new Auditoria(nomeUsuario, "AVARIA", logDesc, System.currentTimeMillis()));
         }).start();
     }
 
@@ -276,8 +281,6 @@ public class AjusteFragment extends Fragment {
                     String codigoLido = result.getContents().trim().toUpperCase();
                     binding.etCodigoAvaria.setText(codigoLido);
                     buscarProduto(codigoLido);
-                } else {
-                    Toast.makeText(requireContext(), "Leitura cancelada", Toast.LENGTH_SHORT).show();
                 }
             }
     );

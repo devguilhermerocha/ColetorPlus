@@ -4,61 +4,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:padding="8dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
         android:text="Gestão de Endereços"
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <!-- Barra de Pesquisa de Rua + Câmera -->
-    <LinearLayout
+    <!-- Barra de Pesquisa de Rua + Câmera Padronizada -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        app:cardUseCompatPadding="true">
 
-        <EditText
-            android:id="@+id/etSearchInventory"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:drawable/editbox_background"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:drawablePadding="8dp"
-            android:hint="Pesquisar Rua ou Gôndola"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:padding="8dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
-        <ImageButton
-            android:id="@+id/btnBarcodeScanner"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Escanear Código de Barras"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/qrcode"
-            app:tint="?attr/colorPrimary" />
-    </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilSearchInventory"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Pesquisar Rua ou Gôndola">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etSearchInventory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardScannerInventory"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginStart="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
+
+                <ImageButton
+                    android:id="@+id/btnBarcodeScanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/qrcode"
+                    app:tint="?attr/colorPrimary"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="Escanear Código de Barras" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Card Exibido após Selecionar/Criar a Rua -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardInventoryDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:visibility="gone"
         app:cardBackgroundColor="#F0F4F8"
-        app:cardCornerRadius="8dp"
-        app:strokeColor="#1976D2"
-        app:strokeWidth="1dp">
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,6 +116,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvInventoryManagement"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp" />
 
 </LinearLayout>
