@@ -1,7 +1,3 @@
-- [ ] Fix Admin Status Bar appearance in `activity_admin.xml`
-- [ ] Refactor `dialog_admin_novo_produto.xml` (Add Blue Top Bar and internal Buttons)
-- [ ] Refactor `dialog_admin_novo_usuario.xml` (Add Blue Top Bar and internal Buttons)
-- [ ] Update `AdminProductManagementFragment.java` logic for custom dialog buttons
-- [ ] Update `AdminUserManagementFragment.java` logic for custom dialog buttons
-- [ ] Improve "Limpar Logs" button in `fragment_admin_audit.xml`
-- [ ] Verify build and consistency
+- [x] Remove `DrawerLayout` and `NavigationView` from `activity_main.xml`
+- [x] Remove drawer logic and configuration from `MainActivity.java`
+- [x] Verify build and bottom navigation flow

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.application.coletorplus.R;
-import com.application.coletorplus.ui.admin.DashboardAlerta;
+import com.application.coletorplus.data.model.DashboardAlerta;
 
 import java.util.ArrayList;
 import java.util.List;

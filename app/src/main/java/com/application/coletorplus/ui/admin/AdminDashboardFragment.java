@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.application.coletorplus.data.database.AppDatabase;
+import com.application.coletorplus.data.model.DashboardAlerta;
 import com.application.coletorplus.data.model.Produto;
 import com.application.coletorplus.data.dao.ValidadeDao;
 import com.application.coletorplus.databinding.FragmentAdminDashboardBinding;

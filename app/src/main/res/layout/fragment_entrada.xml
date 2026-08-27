@@ -108,6 +108,7 @@
             android:id="@+id/cardEnderecoEntrada"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             app:cardUseCompatPadding="true">
@@ -182,7 +183,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:visibility="gone"
-                    app:cardBackgroundColor="#F5F5F5"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp">
 
@@ -206,7 +206,7 @@
                             android:layout_marginStart="8dp"
                             android:text="Rua: Não identificada"
                             android:textStyle="bold"
-                            android:textColor="@android:color/black" />
+                            android:textColor="?attr/colorOnSurface" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

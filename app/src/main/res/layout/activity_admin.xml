@@ -5,7 +5,6 @@
     android:id="@+id/admin_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".AdminActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -13,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true"
         android:theme="@style/Theme.ColetorPlus.AppBarOverlay"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -40,7 +40,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavAdmin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/admin_bottom_nav" />

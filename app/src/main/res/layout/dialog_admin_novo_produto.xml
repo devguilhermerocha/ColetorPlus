@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:background="@android:color/white">
+    android:background="?attr/colorSurface">
 
     <!-- Top Bar Azul do Diálogo -->
     <LinearLayout

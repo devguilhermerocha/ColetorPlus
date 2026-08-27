@@ -1,4 +1,4 @@
-package com.application.coletorplus.ui.admin;
+package com.application.coletorplus.data.model;
 
 public class DashboardAlerta {
     public enum TipoAlerta {

@@ -35,16 +35,22 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:replace="android:screenOrientation" />
 
-        <!-- Tela de Login (Ponto de entrada do app) -->
+        <!-- Tela de Splash (Novo ponto de entrada) -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".SplashActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize" >
+            android:theme="@style/Theme.ColetorPlus.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Tela de Login -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- Painel Gerencial do perfil Admin/Master -->
         <activity

@@ -96,7 +96,10 @@ public class EntradaFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        adapter = new EntradaBatchAdapter(position -> adapter.removerProduto(position));
+        adapter = new EntradaBatchAdapter(position -> {
+            adapter.removerProduto(position);
+            verificarVisibilidadePasso2();
+        });
         binding.rvEntradaProdutos.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvEntradaProdutos.setAdapter(adapter);
     }
@@ -113,10 +116,20 @@ public class EntradaFragment extends Fragment {
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (p != null) {
+                        // VERIFICA DUPLICIDADE NA LISTA ATUAL
+                        for (Produto existing : adapter.getProdutos()) {
+                            if (existing.getCodigoEan().equals(eanFinal)) {
+                                Toast.makeText(context, "Produto já está na lista!", Toast.LENGTH_SHORT).show();
+                                binding.etCodigoProdutoEntrada.setText("");
+                                return;
+                            }
+                        }
+
                         adapter.addProduto(p);
                         binding.etCodigoProdutoEntrada.setText("");
                         binding.etCodigoProdutoEntrada.requestFocus();
                         binding.rvEntradaProdutos.scrollToPosition(0);
+                        verificarVisibilidadePasso2();
                     } else {
                         Toast.makeText(context, "Produto " + eanFinal + " não encontrado", Toast.LENGTH_SHORT).show();
                     }
@@ -254,9 +267,20 @@ public class EntradaFragment extends Fragment {
         adapter.limpar();
         enderecoSelecionado = null;
         if (binding != null) {
+            binding.cardEnderecoEntrada.setVisibility(View.GONE);
             binding.cardInfoRuaIdentificada.setVisibility(View.GONE);
             binding.etCodigoProdutoEntrada.setText("");
             binding.etCodigoRua.setText("");
+        }
+    }
+
+    private void verificarVisibilidadePasso2() {
+        if (binding != null && adapter != null) {
+            if (adapter.getItemCount() > 0) {
+                binding.cardEnderecoEntrada.setVisibility(View.VISIBLE);
+            } else {
+                binding.cardEnderecoEntrada.setVisibility(View.GONE);
+            }
         }
     }
 

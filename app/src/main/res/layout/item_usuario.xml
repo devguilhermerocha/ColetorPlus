@@ -36,7 +36,7 @@
                 android:text="Nome do Usuário"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/black" />
+                android:textColor="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/tvItemMatricula"
