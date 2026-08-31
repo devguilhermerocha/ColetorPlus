@@ -14,7 +14,7 @@ public class ScannerHelper {
         options.setBeepEnabled(true);
         options.setOrientationLocked(false);
         options.setCaptureActivity(CaptureActivityPortrait.class);
-        options.addExtra("HIDE_VIEWFINDER", true); // Esconder visual no QR Code
+        options.addExtra("HIDE_LASER", true);
 
         launcher.launch(options);
     }

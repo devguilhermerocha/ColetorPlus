@@ -13,6 +13,11 @@ public class CaptureActivityPortrait extends CaptureActivity {
 
         // Verifica se deve esconder o viewfinder (quadrado e linha) baseado no parâmetro enviado
         boolean hideViewfinder = getIntent().getBooleanExtra("HIDE_VIEWFINDER", false);
+        boolean hideLaser = getIntent().getBooleanExtra("HIDE_LASER", false);
+
+        if (hideLaser && decoratedBarcodeView.getViewFinder() != null) {
+            decoratedBarcodeView.getViewFinder().setLaserVisibility(false);
+        }
 
         if (hideViewfinder && decoratedBarcodeView.getViewFinder() != null) {
             decoratedBarcodeView.getViewFinder().setVisibility(View.INVISIBLE);

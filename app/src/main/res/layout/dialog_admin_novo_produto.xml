@@ -75,7 +75,7 @@
                     android:contentDescription="Escanear EAN"
                     android:padding="2dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/qrcode"
+                    android:src="@drawable/leitor"
                     app:tint="?attr/colorPrimary" />
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -144,22 +144,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end">
+            android:layout_marginTop="8dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancelarDialog"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="52dp"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
                 android:text="CANCELAR"
                 android:textColor="#757575"
                 android:layout_marginEnd="8dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSalvarDialog"
-                android:layout_width="wrap_content"
-                android:layout_height="52dp"
-                android:text="SALVAR PRODUTO"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="2"
+                android:text="SALVAR"
                 android:textColor="@android:color/white"
                 app:backgroundTint="?attr/colorPrimary" />
         </LinearLayout>

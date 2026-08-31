@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Cor quando selecionado (Azul) -->
+    <item android:color="#2573D9" android:state_checked="true" />
+    <!-- Cor padrão (Cinza) -->
+    <item android:color="#808080" />
+</selector>

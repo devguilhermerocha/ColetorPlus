@@ -7,6 +7,7 @@
     <string name="menu_entrada">Entrada</string>
     <string name="menu_saida">Saída</string>
     <string name="menu_ajuste">Ajuste</string>
+    <string name="menu_consulta_interna">Consulta de Produtos</string>
     <string name="menu_settings">Configurações</string>
     <string name="menu_admin">Administração</string>
 

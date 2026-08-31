@@ -37,6 +37,13 @@ public class AdminActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        // Força o título da Toolbar como "Coletor+" em todas as telas admin
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle("Coletor+");
+            }
+        });
     }
 
     @Override

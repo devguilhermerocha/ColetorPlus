@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // 2. Configura a Toolbar
-        setSupportActionBar(binding.appBarMain.toolbar);
+        setSupportActionBar(binding.toolbar);
 
         // 4. Captura o NavController através do NavHostFragment
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
@@ -45,8 +45,15 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
 
+        // Força o título da Toolbar como "Coletor+" em todas as telas
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle("Coletor+");
+            }
+        });
+
         // 6. Configuração da BottomNavigation no rodapé
-        BottomNavigationView bottomNavigationView = binding.appBarMain.contentMain.bottomNavView;
+        BottomNavigationView bottomNavigationView = binding.bottomNavView;
         if (bottomNavigationView != null) {
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
